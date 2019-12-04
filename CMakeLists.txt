@@ -6,15 +6,15 @@ project (rt2d)
 ####################################################################
 OPTION(MAKE_START "Make RT2D start application" OFF)
 OPTION(MAKE_VIXEL "Make RT2D game Vixel" ON)
-OPTION(MAKE_DEMO "Make RT2D demo (tests) application" OFF)
-OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" OFF)
+OPTION(MAKE_DEMO "Make RT2D demo (tests) application" ON)
+OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" ON)
 OPTION(MAKE_FLOCKING "Make flocking application" OFF)
 OPTION(MAKE_BASIC3D "Make basic3D application" OFF)
 OPTION(MAKE_NOISE "Make Perlin Noise application" OFF)
 OPTION(MAKE_GEOMETRIC "Make GeoMetric application" OFF)
 OPTION(MAKE_SHADY "Make custom Shader application" OFF)
 OPTION(MAKE_WOLFENSTEIN "Make Wolfenstein3D raycasting application" OFF)
-OPTION(MAKE_COLLISION "Make Collision application" OFF)
+OPTION(MAKE_COLLISION "Make Collision application" ON)
 OPTION(MAKE_DEBUGDRAW "Make DebugDraw application" OFF)
 OPTION(MAKE_RAYCAST "Make Raycast application" OFF)
 
@@ -25,8 +25,8 @@ OPTION(USE_OPENAL "Use OpenAL library" OFF)
 OPTION(MAKE_AUDIOSTART "Make OpenAL/RT2D audiostart" OFF)
 OPTION(MAKE_OPENAL_TONEGEN "Make OpenAL Tone Generator" OFF)
 
-OPTION(USE_BOX2D "Use Box2D" OFF)
-OPTION(MAKE_BOX2DSTART "Make Box2D/RT2D box2dstart" OFF)
+OPTION(USE_BOX2D "Use Box2D" ON)
+OPTION(MAKE_BOX2DSTART "Make Box2D/RT2D box2dstart" ON)
 ####################################################################
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
@@ -175,10 +175,12 @@ ENDIF()
 IF(MAKE_VIXEL)
 	add_executable(vixel
 		vixel/main.cpp
-		vixel/myentity.cpp
-		vixel/myentity.h
-		vixel/myscene.cpp
-		vixel/myscene.h
+		vixel/basicentity.cpp
+		vixel/basicentity.h
+		vixel/superscene.cpp
+		vixel/superscene.h
+		vixel/level01.cpp
+		vixel/level01.h
 	)
 	target_link_libraries(vixel
 		${ALL_GRAPHICS_LIBS}
