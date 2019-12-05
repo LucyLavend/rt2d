@@ -23,7 +23,7 @@ SuperScene::SuperScene() : Scene()
 
 	for (unsigned int i = 0; i < 16; i++) {
 		Text* line = new Text();
-		line->scale = Point2(0.5f, 0.5f);
+		line->scale = Point2(0.3f, 0.3f);
 
 		text.push_back(line);
 		layers[top_layer]->addChild(line);

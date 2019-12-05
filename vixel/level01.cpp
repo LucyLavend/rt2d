@@ -71,43 +71,6 @@ void Level01::restart()
 	setupDefenseGrid();
 }
 
-void Level01::applyDamage(PixelSprite& victim, Pointi pos)
-{
-	//std::cout << "local damagepoint: "<< pos <<std::endl;
-	std::vector<Pointi> damagepixels;
-	damagepixels.push_back(Pointi(-1,1)); // leftabove
-	damagepixels.push_back(Pointi(0,1)); // above
-	damagepixels.push_back(Pointi(1,1)); // rightabove
-
-	damagepixels.push_back(Pointi(-1,0)); // left
-	damagepixels.push_back(Pointi(0,0)); // itself
-	damagepixels.push_back(Pointi(1,0)); // right
-
-	damagepixels.push_back(Pointi(2,0)); // right right
-	damagepixels.push_back(Pointi(-2,0)); // left left
-
-	damagepixels.push_back(Pointi(-1,-1)); // leftbelow
-	damagepixels.push_back(Pointi(0,-1)); // below
-	damagepixels.push_back(Pointi(1,-1)); // rightbelow
-
-	//std::cout << "finding " << pos << std::endl;
-	size_t s = damagepixels.size();
-	for (size_t i = 0; i < s; i++) {
-		std::vector<Pixel>::iterator it = victim.pixels.begin();
-		while (it != victim.pixels.end()) {
-			if ((*it).position == pos + damagepixels[i]) {
-				it = victim.pixels.erase(it);
-				//std::cout << i << ": " << (*it).position << std::endl;
-				// TODO fix: can't delete pixels further to the left or right?
-				//(*it).color = RED;
-				//++it;
-			} else {
-				++it;
-			}
-		}
-	}
-}
-
 void Level01::updateDefenseGrid()
 {
 	size_t s = defense_blocks.size();
@@ -120,7 +83,7 @@ void Level01::setupDefenseGrid()
 {
 	defense_blocks.clear();
 	size_t num = 5;
-	int spacing = 64;
+	int spacing = 16;
 	for (size_t x = 0; x < num; x++) {
 		PixelSprite d = defense_block; // copy sprites etc
 		d.position = Pointi((x*spacing)+32, 32);
@@ -160,25 +123,13 @@ int Level01::highestX()
 
 void Level01::setupDefenseBlock()
 {
-	char defenseBlockSprite[512] = { // 32*16
-		0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,
-		0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,
-		1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1
+	char defenseBlockSprite[16] = {
+		1,1,1,1,
+		1,0,0,1,
+		1,0,0,1,
+		1,1,1,1,
 	};
 
-	defense_block.init(defenseBlockSprite, 32, 16);
+	defense_block.init(defenseBlockSprite, 4, 4);
 	defense_block.position = Pointi(canvas->width() / 2, canvas->height() / 3);
 }
