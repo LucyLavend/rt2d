@@ -9,6 +9,8 @@
 
 Level01::Level01() : SuperScene()
 {
+	currentMaterial = 0;
+
 	srand((unsigned)time(nullptr));
 
 	text[0]->message("Level01");
@@ -66,6 +68,14 @@ void Level01::update(float deltaTime)
 
 		if (input()->getKeyDown(KeyCode('R'))) {
 			restart();
+		}
+
+		for (int i = 0; i <= 9; i++) 
+		{
+			if (input()->getKey(KeyCode(49 + i))) { // KeyCode 49 is Alpha1
+				currentMaterial = i;
+				text[3]->message("Material number: " + std::to_string(currentMaterial));
+			}
 		}
 
 		// every timer update

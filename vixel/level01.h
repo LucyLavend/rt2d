@@ -37,6 +37,8 @@ private:
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
 
+	int currentMaterial;
+
 	void setupDefenseGrid();
 	void updateDefenseGrid();
 	bool placePixel(int x, int y);
@@ -48,6 +50,13 @@ private:
 
 	Canvas* canvas;
 	Timer timer;
+
+	RGBAColor* sand = new RGBAColor(116, 63, 57, 1);
+	RGBAColor* rock = new RGBAColor(230, 177, 133, 1);
+	RGBAColor wood;
+	RGBAColor fire;
+	RGBAColor water;
+	RGBAColor lava;
 };
 
 #endif /* SCENE13_H */
