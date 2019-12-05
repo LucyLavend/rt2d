@@ -21,7 +21,7 @@ Level01::Level01() : SuperScene()
 	layers[0]->addChild(canvas);
 
 	setupDefenseBlock();
-
+	
 	restart();
 }
 
@@ -56,9 +56,11 @@ void Level01::update(float deltaTime)
 	if (tsec > 0.01 - deltaTime) { // 0.01 is 100 fps
 		static int counter=0;
 
+		int mousex = floor(input()->getMouseX() / pixelsize);
+		int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
+		text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
+
 		if (input()->getMouse(0)) {
-			int mousex = floor(input()->getMouseX() / pixelsize);
-			int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 			this->placePixel(int(mousex), int(mousey));
 		}
 
@@ -76,7 +78,7 @@ void Level01::update(float deltaTime)
 }
 
 bool Level01::placePixel(int x, int y) {
-	text[2]->message("Pos: " + std::to_string(x) + ", " + std::to_string(y));
+	
 	canvas->setPixel(x, y, RGBAColor(255, 255, 255, 255));
 	return true;
 }
