@@ -29,12 +29,6 @@ SuperScene::SuperScene() : Scene()
 		layers[top_layer]->addChild(line);
 	}
 
-	// Create a logo entity on the top layer
-	logo = new BasicEntity();
-	logo->position = Point2(SWIDTH/2, SHEIGHT - 50);
-	logo->addLine("assets/rt2d.line");
-	layers[top_layer]->addChild(logo);
-
 	text[1]->message("");
 	text[2]->message("<[/]> previous/next scene");
 	text[3]->message("<ESC> quit demo");
@@ -43,7 +37,6 @@ SuperScene::SuperScene() : Scene()
 
 SuperScene::~SuperScene()
 {
-	layers[top_layer]->removeChild(logo);
 
 	int ls = layers.size();
 	for (int i=0; i<ls; i++) {
@@ -61,7 +54,6 @@ SuperScene::~SuperScene()
 	}
 	text.clear();
 
-	delete logo;
 }
 
 // must be explicitly called from subclass
@@ -90,9 +82,6 @@ void SuperScene::update(float deltaTime)
 	// logo and text follow camera
 	// ###############################################################
 	Point2 cam_pos = Point2(camera()->position.x, camera()->position.y);
-
-	Point2 logo_pos = Point2(cam_pos.x, cam_pos.y - 50 + SHEIGHT/2);
-	logo->position = logo_pos;
 
 	unsigned int s = text.size();
 	for (unsigned int i = 0; i < s; i++) {
