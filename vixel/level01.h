@@ -46,9 +46,6 @@ private:
 
 	PixelSprite defense_block;
 
-	int lowestX();
-	int highestX();
-
 	Canvas* canvas;
 	Timer timer;
 };

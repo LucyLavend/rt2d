@@ -30,8 +30,8 @@ SuperScene::SuperScene() : Scene()
 	}
 
 	text[1]->message("");
-	text[2]->message("<[/]> previous/next scene");
-	text[3]->message("<ESC> quit demo");
+	//text[2]->message("<[/]> previous/next scene");
+	//text[3]->message("<ESC> quit demo");
 }
 
 

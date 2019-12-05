@@ -16,7 +16,7 @@ Level01::Level01() : SuperScene()
 	timer.start();
 
 	// create Canvas
-	pixelsize = 6;
+	pixelsize = 8;
 	canvas = new Canvas(pixelsize); // pixelsize
 	layers[0]->addChild(canvas);
 
@@ -45,7 +45,7 @@ void Level01::update(float deltaTime)
 
 	//text[0]->message(""); // clear title
 	//text[1]->message(""); // clear fps message
-	text[2]->message(""); // clear [/] next scene
+	//text[2]->message(""); // clear [/] next scene
 	text[3]->message(""); // clear <esc> to quit
 	text[10]->message(""); // clear player click count message
 
@@ -56,10 +56,10 @@ void Level01::update(float deltaTime)
 	if (tsec > 0.01 - deltaTime) { // 0.01 is 100 fps
 		static int counter=0;
 
-		if (input()->getMouseDown(0)) {
+		if (input()->getMouse(0)) {
 			int mousex = floor(input()->getMouseX() / pixelsize);
 			int mousey = floor(input()->getMouseY() / pixelsize);
-			placePixel(int(mousex), int(mousey));
+			this->placePixel(int(mousex), int(mousey));
 		}
 
 		// every timer update
@@ -71,8 +71,8 @@ void Level01::update(float deltaTime)
 	}
 }
 
-bool placePixel(int x, int y) {
-	std::cout << x << ", " << y << std::endl;
+bool Level01::placePixel(int x, int y) {
+	text[2]->message("Pos: " + std::to_string(x) + ", " + std::to_string(y));
 	return true;
 }
 
@@ -102,33 +102,6 @@ void Level01::setupDefenseGrid()
 		defense_blocks.push_back(d);
 	}
 }
-
-// ###########################################################################
-// help functions
-int Level01::lowestX()
-{
-	int low = enemies[0].frames[0].position.x;
-	size_t s = enemies.size();
-	for (size_t i = 0; i < s; i++) {
-		if (enemies[i].frames[0].position.x < low) {
-			low = enemies[i].frames[0].position.x;
-		}
-	}
-	return low;
-}
-
-int Level01::highestX()
-{
-	int high = enemies[0].frames[0].position.x;
-	size_t s = enemies.size();
-	for (size_t i = 0; i < s; i++) {
-		if (enemies[i].frames[0].position.x > high) {
-			high = enemies[i].frames[0].position.x;
-		}
-	}
-	return high;
-}
-
 
 // ###########################################################################
 // setup all sprites
