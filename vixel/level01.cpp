@@ -9,6 +9,10 @@
 
 Level01::Level01() : SuperScene()
 {
+	materials.push_back(RGBAColor(116, 63, 57, 1));
+	materials.push_back(RGBAColor(230, 177, 133, 1));
+	materials.push_back(RGBAColor(255, 0, 0, 1));
+
 	currentMaterial = 0;
 
 	srand((unsigned)time(nullptr));
@@ -63,7 +67,7 @@ void Level01::update(float deltaTime)
 		text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
 
 		if (input()->getMouse(0)) {
-			this->placePixel(int(mousex), int(mousey));
+			this->placePixel(int(mousex), int(mousey), currentMaterial);
 		}
 
 		if (input()->getKeyDown(KeyCode('R'))) {
@@ -87,9 +91,9 @@ void Level01::update(float deltaTime)
 	}
 }
 
-bool Level01::placePixel(int x, int y) {
+bool Level01::placePixel(int x, int y, int mat) {
 	
-	canvas->setPixel(x, y, RGBAColor(255, 255, 255, 255));
+	canvas->setPixel(x, y, materials[mat]);
 	return true;
 }
 
