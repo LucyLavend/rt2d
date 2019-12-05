@@ -16,7 +16,8 @@ Level01::Level01() : SuperScene()
 	timer.start();
 
 	// create Canvas
-	canvas = new Canvas(6); // pixelsize
+	pixelsize = 6;
+	canvas = new Canvas(pixelsize); // pixelsize
 	layers[0]->addChild(canvas);
 
 	setupDefenseBlock();
@@ -55,6 +56,12 @@ void Level01::update(float deltaTime)
 	if (tsec > 0.01 - deltaTime) { // 0.01 is 100 fps
 		static int counter=0;
 
+		if (input()->getMouseDown(0)) {
+			int mousex = floor(input()->getMouseX() / pixelsize);
+			int mousey = floor(input()->getMouseY() / pixelsize);
+			placePixel(int(mousex), int(mousey));
+		}
+
 		// every timer update
 		updateDefenseGrid();
 
@@ -62,6 +69,11 @@ void Level01::update(float deltaTime)
 		counter++;
 		timer.start();
 	}
+}
+
+bool placePixel(int x, int y) {
+	std::cout << x << ", " << y << std::endl;
+	return true;
 }
 
 void Level01::restart()
