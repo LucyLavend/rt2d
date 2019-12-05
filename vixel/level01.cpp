@@ -11,7 +11,7 @@ Level01::Level01() : SuperScene()
 {
 	srand((unsigned)time(nullptr));
 
-	text[0]->message("Level01: Space Invaders");
+	text[0]->message("Level01");
 
 	timer.start();
 
@@ -46,7 +46,7 @@ void Level01::update(float deltaTime)
 	//text[0]->message(""); // clear title
 	//text[1]->message(""); // clear fps message
 	//text[2]->message(""); // clear [/] next scene
-	text[3]->message(""); // clear <esc> to quit
+	//text[3]->message(""); // clear <esc> to quit
 	text[10]->message(""); // clear player click count message
 
 	// ###############################################################
@@ -58,7 +58,7 @@ void Level01::update(float deltaTime)
 
 		if (input()->getMouse(0)) {
 			int mousex = floor(input()->getMouseX() / pixelsize);
-			int mousey = floor(input()->getMouseY() / pixelsize);
+			int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 			this->placePixel(int(mousex), int(mousey));
 		}
 
@@ -73,6 +73,8 @@ void Level01::update(float deltaTime)
 
 bool Level01::placePixel(int x, int y) {
 	text[2]->message("Pos: " + std::to_string(x) + ", " + std::to_string(y));
+	text[3]->message("Pos: " + std::to_string(input()->getMouseX()) + ", " + std::to_string(input()->getMouseY()));
+	canvas->setPixel(x, y, RGBAColor(255, 255, 255, 255));
 	return true;
 }
 
