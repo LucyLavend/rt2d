@@ -62,6 +62,10 @@ void Level01::update(float deltaTime)
 			this->placePixel(int(mousex), int(mousey));
 		}
 
+		if (input()->getKeyDown(KeyCode('R'))) {
+			restart();
+		}
+
 		// every timer update
 		updateDefenseGrid();
 
@@ -73,7 +77,6 @@ void Level01::update(float deltaTime)
 
 bool Level01::placePixel(int x, int y) {
 	text[2]->message("Pos: " + std::to_string(x) + ", " + std::to_string(y));
-	text[3]->message("Pos: " + std::to_string(input()->getMouseX()) + ", " + std::to_string(input()->getMouseY()));
 	canvas->setPixel(x, y, RGBAColor(255, 255, 255, 255));
 	return true;
 }
@@ -96,11 +99,11 @@ void Level01::updateDefenseGrid()
 void Level01::setupDefenseGrid()
 {
 	defense_blocks.clear();
-	size_t num = 5;
-	int spacing = 16;
+	size_t num = 16;
+	int spacing = 6;
 	for (size_t x = 0; x < num; x++) {
 		PixelSprite d = defense_block; // copy sprites etc
-		d.position = Pointi((x*spacing)+32, 32);
+		d.position = Pointi((x*spacing)+16, 16);
 		defense_blocks.push_back(d);
 	}
 }
