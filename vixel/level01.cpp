@@ -9,7 +9,6 @@
 
 Level01::Level01() : SuperScene()
 {
-	materials.clear();
 	materials.push_back(dirt);
 	materials.push_back(wood);
 	materials.push_back(stone);
@@ -19,6 +18,7 @@ Level01::Level01() : SuperScene()
 	materials.push_back(acid);
 
 	currentMaterial = 0;
+
 
 	srand((unsigned)time(nullptr));
 
@@ -31,6 +31,7 @@ Level01::Level01() : SuperScene()
 	pixelsize = 8;
 	canvas = new Canvas(pixelsize); // pixelsize
 	layers[0]->addChild(canvas);
+	canvas->backgroundcolor = RGBAColor(24, 20, 25, 255);
 
 	setupDefenseBlock();
 	
