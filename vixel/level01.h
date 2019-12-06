@@ -52,6 +52,10 @@ private:
 	Timer timer;
 
 	std::vector<RGBAColor> materials;
+	RGBAColor dirt = RGBAColor(116, 63, 57, 255);
+	RGBAColor stone = RGBAColor(230, 177, 133, 255);
+	RGBAColor fire = RGBAColor(255, 0, 0, 255);
+	
 };
 
 #endif /* SCENE13_H */

@@ -9,15 +9,17 @@
 
 Level01::Level01() : SuperScene()
 {
-	materials.push_back(RGBAColor(116, 63, 57, 1));
-	materials.push_back(RGBAColor(230, 177, 133, 1));
-	materials.push_back(RGBAColor(255, 0, 0, 1));
+	materials.clear();
+	materials.push_back(dirt);
+	materials.push_back(stone);
+	materials.push_back(fire);
 
 	currentMaterial = 0;
 
 	srand((unsigned)time(nullptr));
 
 	text[0]->message("Level01");
+	text[3]->message("Material number: " + std::to_string(currentMaterial));
 
 	timer.start();
 
@@ -78,7 +80,8 @@ void Level01::update(float deltaTime)
 		{
 			if (input()->getKey(KeyCode(49 + i))) { // KeyCode 49 is Alpha1
 				currentMaterial = i;
-				text[3]->message("Material number: " + std::to_string(currentMaterial));
+				text[3]->message("Material: " + std::to_string(currentMaterial));
+				text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
 			}
 		}
 
@@ -92,7 +95,6 @@ void Level01::update(float deltaTime)
 }
 
 bool Level01::placePixel(int x, int y, int mat) {
-	
 	canvas->setPixel(x, y, materials[mat]);
 	return true;
 }
