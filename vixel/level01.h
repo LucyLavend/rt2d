@@ -53,8 +53,12 @@ private:
 
 	std::vector<RGBAColor> materials;
 	RGBAColor dirt = RGBAColor(116, 63, 57, 255);
-	RGBAColor stone = RGBAColor(230, 177, 133, 255);
-	RGBAColor fire = RGBAColor(255, 0, 0, 255);
+	RGBAColor wood = RGBAColor(230, 177, 133, 255);
+	RGBAColor stone = RGBAColor(100, 100, 100, 255);
+	RGBAColor fire = RGBAColor(228, 59, 68, 255);
+	RGBAColor lava = RGBAColor(247, 118, 34, 255);
+	RGBAColor water = RGBAColor(0, 149, 233, 255);
+	RGBAColor acid = RGBAColor(99, 199, 77, 255);
 	
 };
 

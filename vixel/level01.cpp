@@ -11,8 +11,12 @@ Level01::Level01() : SuperScene()
 {
 	materials.clear();
 	materials.push_back(dirt);
+	materials.push_back(wood);
 	materials.push_back(stone);
 	materials.push_back(fire);
+	materials.push_back(lava);
+	materials.push_back(water);
+	materials.push_back(acid);
 
 	currentMaterial = 0;
 
