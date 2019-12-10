@@ -11,11 +11,11 @@ Level01::Level01() : SuperScene()
 {
 	materials.push_back(dirt);
 	materials.push_back(wood);
-	materials.push_back(stone);
-	materials.push_back(fire);
-	materials.push_back(lava);
-	materials.push_back(water);
-	materials.push_back(acid);
+	//materials.push_back(stone);
+	//materials.push_back(fire);
+	//materials.push_back(lava);
+	//materials.push_back(water);
+	//materials.push_back(acid);
 
 	currentMaterial = 0;
 
@@ -68,27 +68,7 @@ void Level01::update(float deltaTime)
 	float tsec = timer.seconds();
 	if (tsec > 0.01 - deltaTime) { // 0.01 is 100 fps
 		static int counter=0;
-
-		int mousex = floor(input()->getMouseX() / pixelsize);
-		int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
-		text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
-
-		if (input()->getMouse(0)) {
-			this->placePixel(int(mousex), int(mousey), currentMaterial);
-		}
-
-		if (input()->getKeyDown(KeyCode('R'))) {
-			restart();
-		}
-
-		for (int i = 0; i <= 9; i++) 
-		{
-			if (input()->getKey(KeyCode(49 + i))) { // KeyCode 49 is Alpha1
-				currentMaterial = i;
-				text[3]->message("Material: " + std::to_string(currentMaterial));
-				text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
-			}
-		}
+		
 
 		// every timer update
 		updateDefenseGrid();
@@ -96,6 +76,28 @@ void Level01::update(float deltaTime)
 		// restart frametimer
 		counter++;
 		timer.start();
+	}
+
+	int mousex = floor(input()->getMouseX() / pixelsize);
+	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
+	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
+
+	if (input()->getMouse(0)) {
+		this->placePixel(int(mousex), int(mousey), currentMaterial);
+	}
+
+	if (input()->getKeyDown(KeyCode('R'))) {
+		std::cout << "Button test" << std::endl;
+		restart();
+	}
+
+	for (int i = 0; i <= 9; i++)
+	{
+		if (input()->getKeyDown(KeyCode(49 + i)) && i < materials.size()) { // KeyCode 49 is Alpha1
+			currentMaterial = i;
+			text[3]->message("Material: " + std::to_string(currentMaterial));
+			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
+		}
 	}
 }
 

@@ -10,9 +10,9 @@ OPTION(MAKE_DEMO "Make RT2D demo (tests) application" ON)
 OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" ON)
 OPTION(MAKE_FLOCKING "Make flocking application" OFF)
 OPTION(MAKE_BASIC3D "Make basic3D application" OFF)
-OPTION(MAKE_NOISE "Make Perlin Noise application" OFF)
+OPTION(MAKE_NOISE "Make Perlin Noise application" ON)
 OPTION(MAKE_GEOMETRIC "Make GeoMetric application" OFF)
-OPTION(MAKE_SHADY "Make custom Shader application" OFF)
+OPTION(MAKE_SHADY "Make custom Shader application" ON)
 OPTION(MAKE_WOLFENSTEIN "Make Wolfenstein3D raycasting application" OFF)
 OPTION(MAKE_COLLISION "Make Collision application" ON)
 OPTION(MAKE_DEBUGDRAW "Make DebugDraw application" OFF)
@@ -21,12 +21,12 @@ OPTION(MAKE_RAYCAST "Make Raycast application" OFF)
 OPTION(USE_RS232 "Use RS232 library" OFF)
 OPTION(MAKE_SERIAL "Make serial application" OFF)
 
-OPTION(USE_OPENAL "Use OpenAL library" OFF)
+OPTION(USE_OPENAL "Use OpenAL library" ON)
 OPTION(MAKE_AUDIOSTART "Make OpenAL/RT2D audiostart" OFF)
 OPTION(MAKE_OPENAL_TONEGEN "Make OpenAL Tone Generator" OFF)
 
-OPTION(USE_BOX2D "Use Box2D" ON)
-OPTION(MAKE_BOX2DSTART "Make Box2D/RT2D box2dstart" ON)
+OPTION(USE_BOX2D "Use Box2D" OFF)
+OPTION(MAKE_BOX2DSTART "Make Box2D/RT2D box2dstart" OFF)
 ####################################################################
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
@@ -187,7 +187,7 @@ IF(MAKE_VIXEL)
 	)
 	# Copy assets to the build directory
 	file(
-		COPY vixel/assets
+		COPY vixel/levelassets
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 ENDIF()

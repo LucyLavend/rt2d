@@ -39,6 +39,8 @@ private:
 
 	int currentMaterial;
 
+
+
 	void setupDefenseGrid();
 	void updateDefenseGrid();
 	bool placePixel(int x, int y, int mat);
