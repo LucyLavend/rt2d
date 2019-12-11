@@ -32,7 +32,6 @@ Level01::Level01() : SuperScene()
 	pixelsize = 8;
 	canvas = new Canvas(pixelsize); // pixelsize
 	layers[0]->addChild(canvas);
-	canvas->backgroundcolor = RGBAColor(24, 20, 25, 255);
 
 	setupDefenseBlock();
 	
