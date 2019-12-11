@@ -147,11 +147,6 @@ void Level01::updateField() {
 }
 
 bool Level01::placePixel(int x, int y, int mat) {
-	/*canvas->setPixel(x, y, materials[mat]);
-	canvas->setPixel(x - 1, y, materials[mat]);
-	canvas->setPixel(x + 1, y, materials[mat]);
-	canvas->setPixel(x, y - 1, materials[mat]);
-	canvas->setPixel(x, y + 1, materials[mat]);*/
 	if (getIdFromPos(x, y) != -1) {
 		current[getIdFromPos(x, y)] = mat;
 	}
