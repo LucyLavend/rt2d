@@ -34,28 +34,27 @@ public:
 	virtual void update(float deltaTime);
 
 private:
+	inline int getIdFromPos(int x, int y) { return (y*canvas->width()) + x; };
+
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
-
-	int currentMaterial;
+	std::vector<int> current;
 
 	void updateField();
-
 	void setupDefenseGrid();
 	void updateDefenseGrid();
 	void initLevel();
-	bool placePixel(int x, int y, int mat);
+	void drawLevel();
 	void restart();
-
 	void setupDefenseBlock();
-
-	std::vector<int> current;
+	bool placePixel(int x, int y, int mat);
 
 	PixelSprite defense_block;
 
 	Canvas* canvas;
 	Timer timer;
 
+	int currentMaterial;
 	std::vector<RGBAColor> materials;
 	RGBAColor air = RGBAColor(0, 0, 0, 0);
 	RGBAColor dirt = RGBAColor(116, 63, 57, 255);

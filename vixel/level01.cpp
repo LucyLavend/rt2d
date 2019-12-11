@@ -104,6 +104,20 @@ void Level01::initLevel() {
 	current = std::vector<int>(w * h, 0);
 }
 
+void Level01::drawLevel() {
+
+	const int w = canvas->width();
+	const int h = canvas->height();
+
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			
+			canvas->setPixel(x, y, materials[getIdFromPos(x, y)]);
+
+		}
+	}
+}
+
 void Level01::updateField() {
 
 	const int w = canvas->width();
