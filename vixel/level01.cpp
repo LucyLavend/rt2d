@@ -62,7 +62,7 @@ void Level01::update(float deltaTime)
 	// Update and draw only when it's time
 	// ###############################################################
 	float tsec = timer.seconds();
-	if (tsec > 0.06 - deltaTime) { // Game update time
+	if (tsec > 0.04 - deltaTime) { // Game update time
 		
 		//update stuff
 		updateDefenseGrid();
@@ -121,17 +121,20 @@ void Level01::updateField() {
 
 	const int w = canvas->width();
 	const int h = canvas->height();
-	std::vector<int> next = std::vector<int>(w * h, 4);
+	std::vector<int> next = std::vector<int>(w * h, 0);
 
 	for (int x = 0; x < w; x++) {
 		for (int y = 0; y < h; y++) {
 
+			//dirt logic
 			if (current[getIdFromPos(x, y)] == 1) {
-				next[getIdFromPos(x, y)] = 0;
-				next[getIdFromPos(x, y - 1)] = 1;
+				if (current[getIdFromPos(x, y - 1)] == 0) {
+					next[getIdFromPos(x, y)] = 0;
+					next[getIdFromPos(x, y - 1)] = 1;
+				}
 			}
 			else {
-				//next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
+				next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
 			}
 		}
 	}
@@ -140,11 +143,12 @@ void Level01::updateField() {
 }
 
 bool Level01::placePixel(int x, int y, int mat) {
-	canvas->setPixel(x, y, materials[mat]);
+	/*canvas->setPixel(x, y, materials[mat]);
 	canvas->setPixel(x - 1, y, materials[mat]);
 	canvas->setPixel(x + 1, y, materials[mat]);
 	canvas->setPixel(x, y - 1, materials[mat]);
-	canvas->setPixel(x, y + 1, materials[mat]);
+	canvas->setPixel(x, y + 1, materials[mat]);*/
+	current[getIdFromPos(x, y)] = mat;
 	return true;
 }
 
