@@ -125,7 +125,10 @@ void Level01::updateField() {
 		for (int y = 0; y < h; y++) {
 
 			int pixel = getIdFromPos(x, y);
+			int pixelAbove = getIdFromPos(x, y + 1);
 			int pixelBelow = getIdFromPos(x, y - 1);
+			int pixelLeft = getIdFromPos(x - 1, y);
+			int pixelRight = getIdFromPos(x + 1, y);
 
 			//dirt logic
 			if (current[pixel] == 1) {
@@ -136,6 +139,26 @@ void Level01::updateField() {
 				else {
 					next[pixel] = 1;
 				}
+			}
+			//acid logic
+			else if (current[pixel] == 7) {
+				if (pixelAbove > -1 && current[pixelAbove] != 0) {
+					next[pixel] = 0;
+					next[pixelAbove] = 7;
+				}
+				if (pixelBelow > -1 && current[pixelBelow] != 0) {
+					next[pixel] = 0;
+					next[pixelBelow] = 7;
+				}
+				if (pixelLeft > -1 && current[pixelLeft] != 0) {
+					next[pixel] = 0;
+					next[pixelLeft] = 7;
+				}
+				if (pixelRight > -1 && current[pixelRight] != 0) {
+					next[pixel] = 0;
+					next[pixelRight] = 7;
+				}
+
 			}
 			else {
 				next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
