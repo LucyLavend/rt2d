@@ -9,17 +9,16 @@
 
 Level01::Level01() : SuperScene()
 {
-	materials.push_back(air);
-	materials.push_back(dirt);
-	materials.push_back(wood);
-	materials.push_back(stone);
-	materials.push_back(fire);
-	materials.push_back(lava);
-	materials.push_back(water);
-	materials.push_back(acid);
+	materials.push_back(air);//0
+	materials.push_back(dirt);//1
+	materials.push_back(wood);//2
+	materials.push_back(stone);//3
+	materials.push_back(fire);//4
+	materials.push_back(lava);//5
+	materials.push_back(water);//6
+	materials.push_back(acid);//7
 
 	currentMaterial = 0;
-
 
 	srand((unsigned)time(nullptr));
 
@@ -33,6 +32,7 @@ Level01::Level01() : SuperScene()
 	canvas = new Canvas(pixelsize); // pixelsize
 	layers[0]->addChild(canvas);
 
+	initLevel();
 	setupDefenseBlock();
 	
 	restart();
@@ -62,16 +62,14 @@ void Level01::update(float deltaTime)
 	// Update and draw only when it's time
 	// ###############################################################
 	float tsec = timer.seconds();
-	if (tsec > 0.01 - deltaTime) { // 0.01 is 100 fps
-		static int counter=0;
+	if (tsec > 0.06 - deltaTime) { // Game update time
 		
-
 		//update stuff
-		updateField();
 		updateDefenseGrid();
+		updateField();
+		drawLevel();
 
 		// restart frametimer
-		counter++;
 		timer.start();
 	}
 
@@ -109,10 +107,11 @@ void Level01::drawLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 
+	//draw screen from array
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
 			
-			canvas->setPixel(x, y, materials[getIdFromPos(x, y)]);
+			canvas->setPixel(x, y, materials[current[getIdFromPos(x, y)]]);
 
 		}
 	}
@@ -122,9 +121,22 @@ void Level01::updateField() {
 
 	const int w = canvas->width();
 	const int h = canvas->height();
-	std::vector<int> next = std::vector<int>(w * h, 0);
+	std::vector<int> next = std::vector<int>(w * h, 4);
 
+	for (int x = 0; x < w; x++) {
+		for (int y = 0; y < h; y++) {
 
+			if (current[getIdFromPos(x, y)] == 1) {
+				next[getIdFromPos(x, y)] = 0;
+				next[getIdFromPos(x, y - 1)] = 1;
+			}
+			else {
+				//next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
+			}
+		}
+	}
+
+	current = next;
 }
 
 bool Level01::placePixel(int x, int y, int mat) {
