@@ -34,8 +34,6 @@ Level01::Level01() : SuperScene()
 
 	initLevel();
 	setupDefenseBlock();
-	
-	restart();
 }
 
 
@@ -83,7 +81,7 @@ void Level01::update(float deltaTime)
 
 	if (input()->getKeyDown(KeyCode('R'))) {
 		std::cout << "Button test" << std::endl;
-		restart();
+		initLevel();
 	}
 
 	for (int i = 0; i <= 9; i++)
@@ -154,15 +152,10 @@ bool Level01::placePixel(int x, int y, int mat) {
 	canvas->setPixel(x + 1, y, materials[mat]);
 	canvas->setPixel(x, y - 1, materials[mat]);
 	canvas->setPixel(x, y + 1, materials[mat]);*/
-	current[getIdFromPos(x, y)] = mat;
+	if (getIdFromPos(x, y) != -1) {
+		current[getIdFromPos(x, y)] = mat;
+	}
 	return true;
-}
-
-void Level01::restart()
-{
-	canvas->fill(canvas->backgroundcolor);
-
-	setupDefenseGrid();
 }
 
 void Level01::updateDefenseGrid()
