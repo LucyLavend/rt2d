@@ -132,7 +132,7 @@ void Level01::updateField() {
 
 			//dirt logic
 			if (current[pixel] == 1) {
-				if (pixelBelow > -1 && current[pixelBelow] == 0) {
+				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 7)) { //ignore air, acid
 					next[pixel] = 0;
 					next[pixelBelow] = 1;
 				}
@@ -142,19 +142,19 @@ void Level01::updateField() {
 			}
 			//acid logic
 			else if (current[pixel] == 7) {
-				if (pixelAbove > -1 && current[pixelAbove] != 0) {
+				if (pixelAbove > -1 && current[pixelAbove] != 0 && current[pixelAbove] != 7) { //ignore air and self
 					next[pixel] = 0;
 					next[pixelAbove] = 7;
 				}
-				if (pixelBelow > -1 && current[pixelBelow] != 0) {
+				if (pixelBelow > -1 && current[pixelBelow] != 0 && current[pixelBelow] != 7) {
 					next[pixel] = 0;
 					next[pixelBelow] = 7;
 				}
-				if (pixelLeft > -1 && current[pixelLeft] != 0) {
+				if (pixelLeft > -1 && current[pixelLeft] != 0 && current[pixelLeft] != 7) {
 					next[pixel] = 0;
 					next[pixelLeft] = 7;
 				}
-				if (pixelRight > -1 && current[pixelRight] != 0) {
+				if (pixelRight > -1 && current[pixelRight] != 0 && current[pixelRight] != 7) {
 					next[pixel] = 0;
 					next[pixelRight] = 7;
 				}
