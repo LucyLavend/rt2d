@@ -126,11 +126,17 @@ void Level01::updateField() {
 	for (int x = 0; x < w; x++) {
 		for (int y = 0; y < h; y++) {
 
+			int pixel = getIdFromPos(x, y);
+			int pixelBelow = getIdFromPos(x, y - 1);
+
 			//dirt logic
-			if (current[getIdFromPos(x, y)] == 1) {
-				if (current[getIdFromPos(x, y - 1)] == 0) {
-					next[getIdFromPos(x, y)] = 0;
-					next[getIdFromPos(x, y - 1)] = 1;
+			if (current[pixel] == 1) {
+				if (pixelBelow > -1 && current[pixelBelow] == 0) {
+					next[pixel] = 0;
+					next[pixelBelow] = 1;
+				}
+				else {
+					next[pixel] = 1;
 				}
 			}
 			else {

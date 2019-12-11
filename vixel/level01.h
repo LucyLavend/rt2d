@@ -34,7 +34,15 @@ public:
 	virtual void update(float deltaTime);
 
 private:
-	inline int getIdFromPos(int x, int y) { return (y*canvas->width()) + x; };
+	inline int getIdFromPos(int x, int y) { 
+		//check if x and y are inside the canvas bounds
+		if (x > -1 && x < canvas->width() && y > -1 && y < canvas->height()) {
+			return (y * canvas->width()) + x; 
+		}
+		else {
+			return -1;
+		}
+	};
 
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
