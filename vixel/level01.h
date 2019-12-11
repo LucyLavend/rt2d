@@ -39,14 +39,17 @@ private:
 
 	int currentMaterial;
 
-
+	void updateField();
 
 	void setupDefenseGrid();
 	void updateDefenseGrid();
+	void initLevel();
 	bool placePixel(int x, int y, int mat);
 	void restart();
 
 	void setupDefenseBlock();
+
+	std::vector<int> current;
 
 	PixelSprite defense_block;
 
@@ -54,6 +57,7 @@ private:
 	Timer timer;
 
 	std::vector<RGBAColor> materials;
+	RGBAColor air = RGBAColor(0, 0, 0, 0);
 	RGBAColor dirt = RGBAColor(116, 63, 57, 255);
 	RGBAColor wood = RGBAColor(230, 177, 133, 255);
 	RGBAColor stone = RGBAColor(100, 100, 100, 255);

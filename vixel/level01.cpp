@@ -9,6 +9,7 @@
 
 Level01::Level01() : SuperScene()
 {
+	materials.push_back(air);
 	materials.push_back(dirt);
 	materials.push_back(wood);
 	materials.push_back(stone);
@@ -56,10 +57,6 @@ void Level01::update(float deltaTime)
 	titletxt << "Vixel";
 	text[0]->message(titletxt.str());
 
-	//text[0]->message(""); // clear title
-	//text[1]->message(""); // clear fps message
-	//text[2]->message(""); // clear [/] next scene
-	//text[3]->message(""); // clear <esc> to quit
 	text[10]->message(""); // clear player click count message
 
 	// ###############################################################
@@ -70,7 +67,8 @@ void Level01::update(float deltaTime)
 		static int counter=0;
 		
 
-		// every timer update
+		//update stuff
+		updateField();
 		updateDefenseGrid();
 
 		// restart frametimer
@@ -99,6 +97,21 @@ void Level01::update(float deltaTime)
 			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
 		}
 	}
+}
+
+void Level01::initLevel() {
+	const int w = canvas->width();
+	const int h = canvas->height();
+	current = std::vector<int>(w * h, 0);
+}
+
+void Level01::updateField() {
+
+	const int w = canvas->width();
+	const int h = canvas->height();
+	std::vector<int> next = std::vector<int>(w * h, 0);
+
+
 }
 
 bool Level01::placePixel(int x, int y, int mat) {
