@@ -63,9 +63,9 @@ void Level01::update(float deltaTime)
 	if (tsec > 0.04 - deltaTime) { // Game update time
 		
 		//update stuff
-		updateDefenseGrid();
 		updateField();
 		drawLevel();
+		updateDefenseGrid();
 
 		// restart frametimer
 		timer.start();
@@ -98,6 +98,11 @@ void Level01::initLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
+
+	for (int i = 0; i < current.size(); i++)
+	{
+		current[i] = 4;
+	}
 }
 
 void Level01::drawLevel() {
@@ -161,7 +166,9 @@ void Level01::updateField() {
 
 			}
 			else {
-				next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
+				if (next[getIdFromPos(x, y)] == 0) {
+					next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
+				}
 			}
 		}
 	}
