@@ -14,17 +14,6 @@
 #include <rt2d/canvas.h>
 #include "superscene.h"
 
-#define POINT_OF_NO_RETURN Pointi(-1000,-1000)
-
-struct SI_AnimatedSprite {
-	Pointi position;
-	Pointi velocity;
-	std::vector<PixelSprite> frames;
-	void addPixelSprite(PixelSprite ps) {
-		frames.push_back(ps);
-	}
-};
-
 class Level01: public SuperScene
 {
 public:
@@ -53,7 +42,6 @@ private:
 	void updateDefenseGrid();
 	void initLevel();
 	void drawLevel();
-	void restart();
 	void setupDefenseBlock();
 	bool placePixel(int x, int y, int mat);
 
