@@ -18,7 +18,7 @@ Level01::Level01() : SuperScene()
 	materials.push_back(water);//6
 	materials.push_back(acid);//7
 
-	currentMaterial = 0;
+	currentMaterial = 1;
 
 	srand((unsigned)time(nullptr));
 
