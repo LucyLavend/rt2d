@@ -61,7 +61,7 @@ void Level01::update(float deltaTime)
 	// Update and draw only when it's time
 	// ###############################################################
 	float tsec = timer.seconds();
-	if (tsec > 0.04 - deltaTime) { // Game update time
+	if (tsec > 0.01 - deltaTime) { // Game update time
 		
 		//update stuff
 		updateField();
