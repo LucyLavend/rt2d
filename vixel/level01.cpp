@@ -201,6 +201,19 @@ void Level01::updateField() {
 bool Level01::placePixel(int x, int y, int mat) {
 	if (getIdFromPos(x, y) != -1) {
 		current[getIdFromPos(x, y)] = mat;
+
+		if(getIdFromPos(x - 1, y) != -1){
+			current[getIdFromPos(x -1, y)] = mat;
+		}
+		if (getIdFromPos(x + 1, y) != -1) {
+			current[getIdFromPos(x + 1, y)] = mat;
+		}
+		if (getIdFromPos(x, y - 1) != -1) {
+			current[getIdFromPos(x, y - 1)] = mat;
+		}
+		if (getIdFromPos(x, y + 1) != -1) {
+			current[getIdFromPos(x, y + 1)] = mat;
+		}
 	}
 	return true;
 }
