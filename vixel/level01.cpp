@@ -21,6 +21,8 @@ Level01::Level01() : SuperScene()
 
 	currentMaterial = 1;
 
+	frameCount = 0;
+
 	srand((unsigned)time(nullptr));
 
 	text[0]->message("Level01");
@@ -70,6 +72,8 @@ void Level01::update(float deltaTime)
 
 		// restart frametimer
 		timer.start();
+
+		frameCount++;
 	}
 
 	int mousex = floor(input()->getMouseX() / pixelsize);
@@ -140,7 +144,7 @@ void Level01::updateField() {
 			int pixelRight = getIdFromPos(x + 1, y);
 
 			//dirt logic
-			if (current[pixel] == 1) {
+			if (frameCount % 2 == 0 && current[pixel] == 1) {
 				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) { //ignore air, water
 					next[pixel] = 0;
 					next[pixelBelow] = 1;
@@ -151,7 +155,7 @@ void Level01::updateField() {
 			}
 
 			//fire logic
-			else if (current[pixel] == 4) {
+			else if (frameCount % 4 == 0 && current[pixel] == 4) {
 				if (pixelAbove > -1 && current[pixelAbove] == 2) { //find wood
 					next[pixel] = 0;
 					next[pixelAbove] = 4;
@@ -202,7 +206,7 @@ void Level01::updateField() {
 			}
 
 			//acid logic
-			else if (current[pixel] == 7) {
+			else if (frameCount % 4 == 0 && current[pixel] == 7) {
 				if (pixelAbove > -1 && current[pixelAbove] != 0 && current[pixelAbove] != 7) { //ignore air and self
 					next[pixel] = 0;
 					next[pixelAbove] = 7;
@@ -219,7 +223,6 @@ void Level01::updateField() {
 					next[pixel] = 0;
 					next[pixelRight] = 7;
 				}
-
 			}
 			else {
 				if (next[getIdFromPos(x, y)] == 0) {

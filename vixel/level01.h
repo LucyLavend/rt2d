@@ -33,6 +33,7 @@ private:
 		}
 	};
 
+	int frameCount;
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
 	std::vector<int> current;
