@@ -145,6 +145,28 @@ void Level01::updateField() {
 					next[pixel] = 1;
 				}
 			}
+
+			//fire logic
+			else if (current[pixel] == 4) {
+				if (pixelAbove > -1 && current[pixelAbove] == 2) { //find wood
+					next[pixel] = 0;
+					next[pixelAbove] = 4;
+				}
+				if (pixelBelow > -1 && current[pixelBelow] == 2) {
+					next[pixel] = 0;
+					next[pixelBelow] = 4;
+				}
+				if (pixelLeft > -1 && current[pixelLeft] == 2) {
+					next[pixel] = 0;
+					next[pixelLeft] = 4;
+				}
+				if (pixelRight > -1 && current[pixelRight] == 2) {
+					next[pixel] = 0;
+					next[pixelRight] = 4;
+				}
+
+			}
+
 			//acid logic
 			else if (current[pixel] == 7) {
 				if (pixelAbove > -1 && current[pixelAbove] != 0 && current[pixelAbove] != 7) { //ignore air and self
