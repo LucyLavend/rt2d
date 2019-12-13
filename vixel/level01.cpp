@@ -6,6 +6,7 @@
 
 #include <time.h>
 #include "level01.h"
+#include <stdlib.h>
 
 Level01::Level01() : SuperScene()
 {
@@ -140,7 +141,7 @@ void Level01::updateField() {
 
 			//dirt logic
 			if (current[pixel] == 1) {
-				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 7)) { //ignore air, acid
+				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) { //ignore air, water
 					next[pixel] = 0;
 					next[pixelBelow] = 1;
 				}
@@ -169,6 +170,35 @@ void Level01::updateField() {
 				}
 			}
 
+			//water logic
+			else if (current[pixel] == 6) {
+				float dir = rand() % 3;
+				bool left = false;
+				bool right = false;
+				bool down = false;
+
+				if (dir == 1) {
+					if (pixelLeft > -1 && (current[pixelLeft] == 0)) { //find air
+						next[pixel] = 0;
+						next[pixelLeft] = 6;
+						left = true;
+					}
+				}
+				else if(dir == 2){
+					if (pixelRight > -1 && (current[pixelRight] == 0)) { //find air
+						next[pixel] = 0;
+						next[pixelRight] = 6;
+						right = true;
+					}
+				}
+				if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //find air
+					next[pixel] = 0;
+					next[pixelBelow] = 6;
+					down = true;
+				}
+				if(!left && !right && !down) { //check if there was no movement, then keep the pixel the same place as before
+					next[pixel] = 6;
+				}
 			}
 
 			//acid logic
