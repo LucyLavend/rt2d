@@ -74,16 +74,24 @@ void Level01::update(float deltaTime)
 	int mousex = floor(input()->getMouseX() / pixelsize);
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
-
+	//place material
 	if (input()->getMouse(0)) {
 		this->placePixel(int(mousex), int(mousey), currentMaterial);
 	}
-
+	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
-		std::cout << "Button test" << std::endl;
 		initLevel();
 	}
-
+	//fill key
+	if (input()->getKeyDown(KeyCode('M'))) {
+		for (int i = 0; i < current.size(); i++)
+		{
+			if (current[i] == 0) {
+				current[i] = 2;
+			}
+		}
+	}
+	//select material
 	for (int i = 0; i <= 9; i++)
 	{
 		if (input()->getKeyDown(KeyCode(49 + i)) && i < materials.size()) { // KeyCode 49 is Alpha1
@@ -98,11 +106,6 @@ void Level01::initLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
-
-	for (int i = 0; i < current.size(); i++)
-	{
-		current[i] = 4;
-	}
 }
 
 void Level01::drawLevel() {
@@ -164,6 +167,7 @@ void Level01::updateField() {
 					next[pixel] = 0;
 					next[pixelRight] = 4;
 				}
+			}
 
 			}
 
