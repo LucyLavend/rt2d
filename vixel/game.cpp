@@ -192,6 +192,11 @@ void Game::updateField() {
 						next[pixelLeft] = 3;
 						left = true;
 					}
+					else if (pixelLeft > -1 && (current[pixelLeft] == 4)) { //find fire
+						next[pixel] = 0;
+						next[pixelLeft] = 0;
+						left = true;
+					}
 				}
 				else if(dir == 2){
 					if (pixelRight > -1 && (current[pixelRight] == 0)) { //find air
@@ -204,6 +209,11 @@ void Game::updateField() {
 						next[pixelRight] = 3;
 						right = true;
 					}
+					else if (pixelRight > -1 && (current[pixelRight] == 4)) { //find fire
+						next[pixel] = 0;
+						next[pixelRight] = 0;
+						right = true;
+					}
 				}
 				if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //find air
 					next[pixel] = 0;
@@ -213,6 +223,11 @@ void Game::updateField() {
 				else if (pixelBelow > -1 && (current[pixelBelow] == 5)) { //find air
 					next[pixel] = 0;
 					next[pixelBelow] = 3;
+					down = true;
+				}
+				else if (pixelBelow > -1 && (current[pixelBelow] == 4)) { //find air
+					next[pixel] = 0;
+					next[pixelBelow] = 0;
 					down = true;
 				}
 				if(!left && !right && !down) { //check if there was no movement, then keep the pixel the same place as before
