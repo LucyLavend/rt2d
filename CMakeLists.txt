@@ -175,6 +175,8 @@ ENDIF()
 IF(MAKE_VIXEL)
 	add_executable(vixel
 		vixel/main.cpp
+		vixel/character.cpp
+		vixel/character.h
 		vixel/basicentity.cpp
 		vixel/basicentity.h
 		vixel/superscene.cpp
