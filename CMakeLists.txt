@@ -181,8 +181,8 @@ IF(MAKE_VIXEL)
 		vixel/basicentity.h
 		vixel/superscene.cpp
 		vixel/superscene.h
-		vixel/level01.cpp
-		vixel/level01.h
+		vixel/game.cpp
+		vixel/game.h
 	)
 	target_link_libraries(vixel
 		${ALL_GRAPHICS_LIBS}

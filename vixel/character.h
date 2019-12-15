@@ -10,10 +10,11 @@
 
 #include <vector>
 
-class Character: public Character
+class Character
 {
 public:
-
+	Character();
+	virtual ~Character();
 
 private:
 

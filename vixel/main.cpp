@@ -7,7 +7,7 @@
 
 #include <rt2d/core.h>
 
-#include "level01.h"
+#include "game.h"
 
 int main( void )
 {
@@ -16,7 +16,7 @@ int main( void )
 
 	// Create all scenes on the heap and keep a list
 	std::vector<SuperScene*> scenes;
-	scenes.push_back(new Level01()); // canvas space invaders
+	scenes.push_back(new Game()); // canvas space invaders
 	int s = scenes.size();
 
 	// start running with the first Scene

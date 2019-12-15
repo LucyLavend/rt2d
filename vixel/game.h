@@ -5,8 +5,8 @@
  *     - Initial commit
  */
 
-#ifndef SCENE13_H
-#define SCENE13_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <vector>
 #include <rt2d/timer.h>
@@ -14,11 +14,11 @@
 #include <rt2d/canvas.h>
 #include "superscene.h"
 
-class Level01: public SuperScene
+class Game: public SuperScene
 {
 public:
-	Level01();
-	virtual ~Level01();
+	Game();
+	virtual ~Game();
 
 	virtual void update(float deltaTime);
 
@@ -64,4 +64,4 @@ private:
 	
 };
 
-#endif /* SCENE13_H */
+#endif /* GAME_H */

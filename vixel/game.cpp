@@ -5,10 +5,10 @@
  */
 
 #include <time.h>
-#include "level01.h"
+#include "game.h"
 #include <stdlib.h>
 
-Level01::Level01() : SuperScene()
+Game::Game() : SuperScene()
 {
 	materials.push_back(air);//0
 	materials.push_back(dirt);//1
@@ -25,7 +25,7 @@ Level01::Level01() : SuperScene()
 
 	srand((unsigned)time(nullptr));
 
-	text[0]->message("Level01");
+	text[0]->message("Game");
 	text[3]->message("Material number: " + std::to_string(currentMaterial));
 
 	timer.start();
@@ -40,13 +40,13 @@ Level01::Level01() : SuperScene()
 }
 
 
-Level01::~Level01()
+Game::~Game()
 {
 	layers[0]->removeChild(canvas);
 	delete canvas;
 }
 
-void Level01::update(float deltaTime)
+void Game::update(float deltaTime)
 {
 	// ###############################################################
 	// Make SuperScene do what it needs to do (Escape key stops Scene)
@@ -107,13 +107,13 @@ void Level01::update(float deltaTime)
 	}
 }
 
-void Level01::initLevel() {
+void Game::initLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
 }
 
-void Level01::drawLevel() {
+void Game::drawLevel() {
 
 	const int w = canvas->width();
 	const int h = canvas->height();
@@ -128,7 +128,7 @@ void Level01::drawLevel() {
 	}
 }
 
-void Level01::updateField() {
+void Game::updateField() {
 
 	const int w = canvas->width();
 	const int h = canvas->height();
@@ -235,7 +235,7 @@ void Level01::updateField() {
 	current = next;
 }
 
-bool Level01::placePixel(int x, int y, int mat) {
+bool Game::placePixel(int x, int y, int mat) {
 	if (getIdFromPos(x, y) != -1) {
 		current[getIdFromPos(x, y)] = mat;
 
@@ -255,7 +255,7 @@ bool Level01::placePixel(int x, int y, int mat) {
 	return true;
 }
 
-void Level01::updateDefenseGrid()
+void Game::updateDefenseGrid()
 {
 	size_t s = defense_blocks.size();
 	for (size_t i = 0; i < s; i++) {
@@ -263,7 +263,7 @@ void Level01::updateDefenseGrid()
 	}
 }
 
-void Level01::setupDefenseGrid()
+void Game::setupDefenseGrid()
 {
 	defense_blocks.clear();
 	size_t num = 16;
@@ -278,7 +278,7 @@ void Level01::setupDefenseGrid()
 // ###########################################################################
 // setup all sprites
 
-void Level01::setupDefenseBlock()
+void Game::setupDefenseBlock()
 {
 	char defenseBlockSprite[16] = {
 		1,1,1,1,
