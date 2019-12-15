@@ -1,19 +1,19 @@
 /**
- * This file is part of a demo that shows how to use RT2D, a 2D OpenGL framework.
+ * This file is part of the game Vixel in the RT2D framework.
  *
- * - Copyright 2015 Rik Teerling <rik@onandoffables.com>
+ * - Copyright 2019 Lucy Jongebloed
  *     - Initial commit
  */
 
 #include "character.h"
 
-SuperScene::SuperScene()
+Character::Character()
 {
 	
 }
 
 
-SuperScene::~SuperScene()
+Character::~Character()
 {
 
 }
