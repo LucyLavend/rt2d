@@ -174,6 +174,17 @@ void Game::updateField() {
 				}
 			}
 
+			//stone logic
+			else if (current[pixel] == 3) {
+				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6) && pixelLeft > -1 && current[pixelLeft] == 0 && pixelRight > -1 && current[pixelRight] == 0) { //
+					next[pixel] = 0;
+					next[pixelBelow] = 3;
+				}
+				else {
+					next[pixel] = 3;
+				}
+			}
+
 			//water logic
 			else if (current[pixel] == 6) {
 				float dir = rand() % 3;
@@ -315,6 +326,7 @@ void Game::updateField() {
 					next[pixelRight] = 7;
 				}
 			}
+
 			else {
 				if (next[getIdFromPos(x, y)] == 0) {
 					next[getIdFromPos(x, y)] = current[getIdFromPos(x, y)];
