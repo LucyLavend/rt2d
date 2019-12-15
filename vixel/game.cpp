@@ -187,11 +187,21 @@ void Game::updateField() {
 						next[pixelLeft] = 6;
 						left = true;
 					}
+					else if (pixelLeft > -1 && (current[pixelLeft] == 5)) { //find lava
+						next[pixel] = 0;
+						next[pixelLeft] = 3;
+						left = true;
+					}
 				}
 				else if(dir == 2){
 					if (pixelRight > -1 && (current[pixelRight] == 0)) { //find air
 						next[pixel] = 0;
 						next[pixelRight] = 6;
+						right = true;
+					}
+					else if (pixelRight > -1 && (current[pixelRight] == 5)) { //find lava
+						next[pixel] = 0;
+						next[pixelRight] = 3;
 						right = true;
 					}
 				}
@@ -200,8 +210,74 @@ void Game::updateField() {
 					next[pixelBelow] = 6;
 					down = true;
 				}
+				else if (pixelBelow > -1 && (current[pixelBelow] == 5)) { //find air
+					next[pixel] = 0;
+					next[pixelBelow] = 3;
+					down = true;
+				}
 				if(!left && !right && !down) { //check if there was no movement, then keep the pixel the same place as before
 					next[pixel] = 6;
+				}
+			}
+
+			//lava logic
+			else if (frameCount % 2 == 0 && current[pixel] == 5) {
+				float dir = rand() % 3;
+				bool left = false;
+				bool right = false;
+				bool down = false;
+
+				if (dir == 1) {
+					if (pixelLeft > -1 && (current[pixelLeft] == 0)) { //find air
+						next[pixel] = 0;
+						next[pixelLeft] = 5;
+						left = true;
+					}
+					else if (pixelLeft > -1 && (current[pixelLeft] == 2)) { //find wood
+						next[pixel] = 0;
+						next[pixelLeft] = 4;
+						left = true;
+					}
+					else if (pixelLeft > -1 && (current[pixelLeft] == 6)) { //find water
+						next[pixel] = 0;
+						next[pixelLeft] = 3;
+						left = true;
+					}
+				}
+				else if (dir == 2) {
+					if (pixelRight > -1 && (current[pixelRight] == 0)) { //find air
+						next[pixel] = 0;
+						next[pixelRight] = 5;
+						right = true;
+					}
+					else if (pixelRight > -1 && (current[pixelRight] == 2)) { //find wood
+						next[pixel] = 0;
+						next[pixelRight] = 4;
+						right = true;
+					}
+					else if (pixelRight > -1 && (current[pixelRight] == 6)) { //find water
+						next[pixel] = 0;
+						next[pixelRight] = 3;
+						right = true;
+					}
+				}
+				if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //find air
+					next[pixel] = 0;
+					next[pixelBelow] = 5;
+					down = true;
+				}
+				else if (pixelBelow > -1 && (current[pixelBelow] == 2)) { //find wood
+					next[pixel] = 0;
+					next[pixelBelow] = 4;
+					down = true;
+				}
+				else if (pixelBelow > -1 && (current[pixelBelow] == 6)) { //find water
+					next[pixel] = 0;
+					next[pixelBelow] = 3;
+					down = true;
+				}
+				if (!left && !right && !down) { //check if there was no movement, then keep the pixel the same place as before
+					next[pixel] = 5;
 				}
 			}
 
