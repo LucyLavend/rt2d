@@ -49,6 +49,7 @@ private:
 	PixelSprite defense_block;
 
 	Canvas* canvas;
+	Canvas* uiCanvas;
 	Timer timer;
 
 	int currentMaterial;

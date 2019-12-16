@@ -32,18 +32,21 @@ Game::Game() : SuperScene()
 
 	// create Canvas
 	pixelsize = 8;
-	canvas = new Canvas(pixelsize); // pixelsize
+	canvas = new Canvas(pixelsize);
+	uiCanvas = new Canvas(pixelsize);
 	layers[0]->addChild(canvas);
+	layers[1]->addChild(uiCanvas);
 
 	initLevel();
 	setupDefenseBlock();
 }
 
-
 Game::~Game()
 {
 	layers[0]->removeChild(canvas);
+	layers[1]->removeChild(uiCanvas);
 	delete canvas;
+	delete uiCanvas;
 }
 
 void Game::update(float deltaTime)

@@ -31,7 +31,6 @@ protected:
 	void moveCamera(float deltaTime);
 
 private:
-	BasicEntity* logo;
 	Timer fpstimer;
 };
 
