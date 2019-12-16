@@ -102,9 +102,13 @@ void Game::update(float deltaTime)
 
 	int mousex = floor(input()->getMouseX() / pixelsize);
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
-	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey));
-	//place material
+	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
+
+	//place material or select material on UI
 	if (input()->getMouse(0)) {
+		//if (mousex >= uiCanvas->width()) {
+
+		//}
 		this->placePixel(int(mousex), int(mousey), currentMaterial);
 	}
 	//reset key
@@ -116,7 +120,7 @@ void Game::update(float deltaTime)
 		for (int i = 0; i < current.size(); i++)
 		{
 			if (current[i] == 0) {
-				current[i] = 2;
+				current[i] = currentMaterial;
 			}
 		}
 	}
