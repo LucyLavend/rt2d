@@ -37,7 +37,9 @@ private:
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
 	std::vector<int> current;
+	std::vector<int> ui;
 
+	void drawUI();
 	void updateField();
 	void setupDefenseGrid();
 	void updateDefenseGrid();

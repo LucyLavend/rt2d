@@ -38,6 +38,7 @@ Game::Game() : SuperScene()
 	layers[1]->addChild(uiCanvas);
 
 	initLevel();
+	drawUI();
 	setupDefenseBlock();
 }
 
@@ -47,6 +48,26 @@ Game::~Game()
 	layers[1]->removeChild(uiCanvas);
 	delete canvas;
 	delete uiCanvas;
+}
+
+void Game::drawUI() {
+	for (int i = 0; i < materials.size(); i++)
+	{
+		//reverse order for a nicer look
+		RGBAColor mat = materials[materials.size() - 1 - i];
+		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 5, mat);
+		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 5, mat);
+		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 6, mat);
+		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 6, mat);
+		//clear selectet material underlining
+		uiCanvas->clearPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 7);
+		uiCanvas->clearPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 7);
+
+		//draw background
+	}
+	//draw selected material underline
+	uiCanvas->setPixel(uiCanvas->width() - 2 * (materials.size() - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
+	uiCanvas->setPixel(uiCanvas->width() - 2 * (materials.size() - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
 }
 
 void Game::update(float deltaTime)
@@ -106,6 +127,7 @@ void Game::update(float deltaTime)
 			currentMaterial = i;
 			text[3]->message("Material: " + std::to_string(currentMaterial));
 			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
+			drawUI();
 		}
 	}
 }
