@@ -24,7 +24,7 @@
 
 #define FULLSCREEN 0 ///< Fullscreen or not
 
-#define WINDOWNAME "RT2D" ///< The window name
+#define WINDOWNAME "Vixel" ///< The window name
 
 #define CLEARCOLOR_RED 0.1f ///< The red component of the color of the window
 #define CLEARCOLOR_GREEN 0.1f ///< The green component of the color of the window
