@@ -34,11 +34,14 @@ private:
 	};
 
 	int frameCount;
+	int currentMaterial;
+	int scrolledAmount;
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
 	std::vector<int> current;
 	std::vector<int> ui;
 
+	void selectMaterialOnUI();
 	void drawUI();
 	void updateField();
 	void setupDefenseGrid();
@@ -54,7 +57,6 @@ private:
 	Canvas* uiCanvas;
 	Timer timer;
 
-	int currentMaterial;
 	std::vector<RGBAColor> materials;
 	RGBAColor air = RGBAColor(0, 0, 0, 0);
 	RGBAColor dirt = RGBAColor(116, 63, 57, 255);

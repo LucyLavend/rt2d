@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <singleton.h>
 #include <rt2d/input.h>
 
 Input::Input()
@@ -15,6 +16,7 @@ Input::Input()
 
 	_windowWidth = 0;
 	_windowHeight = 0;
+
 
 	for(unsigned int i=0; i<GLFW_KEY_LAST; i++) {
 		_keys[i] = false;
@@ -26,6 +28,8 @@ Input::Input()
 		_mouseUp[i] = false;
 		_mouseDown[i] = false;
 	}
+
+
 }
 
 Input::~Input()
@@ -33,10 +37,20 @@ Input::~Input()
 	std::cout << "Input destructor" << std::endl;
 }
 
+void handleMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
+{
+	Singleton<Input>::instance()->mouseScrollX = xoffset;
+	Singleton<Input>::instance()->mouseScrollY = yoffset;
+}
+
 void Input::updateInput(GLFWwindow* w)
 {
-	_window = w;
+	Singleton<Input>::instance()->mouseScrollX = 0;
+	Singleton<Input>::instance()->mouseScrollY = 0;
 
+	_window = w;
+	
+	glfwSetScrollCallback(_window, handleMouseScroll);
 	glfwPollEvents();
 
 	// 32-97 = ' ' to '`'

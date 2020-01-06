@@ -20,7 +20,7 @@ Game::Game() : SuperScene()
 	materials.push_back(acid);//7
 
 	currentMaterial = 1;
-
+	scrolledAmount = 0;
 	frameCount = 0;
 
 	srand((unsigned)time(nullptr));
@@ -92,11 +92,11 @@ void Game::update(float deltaTime)
 		//update stuff
 		updateField();
 		drawLevel();
+		drawUI();
 		updateDefenseGrid();
 
 		// restart frametimer
 		timer.start();
-
 		frameCount++;
 	}
 
@@ -104,11 +104,8 @@ void Game::update(float deltaTime)
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
 
-	//place material or select material on UI
+	//place material
 	if (input()->getMouse(0)) {
-		//if (mousex >= uiCanvas->width()) {
-
-		//}
 		this->placePixel(int(mousex), int(mousey), currentMaterial);
 	}
 	//reset key
@@ -124,14 +121,25 @@ void Game::update(float deltaTime)
 			}
 		}
 	}
-	//select material
+	//change material on scroll
+	if (input()->mouseScrollY != 0) {
+		scrolledAmount += input()->mouseScrollY;
+
+		if(scrolledAmount < 0){
+			scrolledAmount = materials.size() - 1;
+		}
+		if (scrolledAmount > materials.size() - 1) {
+			scrolledAmount = 0;
+		}
+		currentMaterial = scrolledAmount;
+	}
+	//select material on number key press
 	for (int i = 0; i <= 9; i++)
 	{
 		if (input()->getKeyDown(KeyCode(49 + i)) && i < materials.size()) { // KeyCode 49 is Alpha1
 			currentMaterial = i;
 			text[3]->message("Material: " + std::to_string(currentMaterial));
 			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
-			drawUI();
 		}
 	}
 }
