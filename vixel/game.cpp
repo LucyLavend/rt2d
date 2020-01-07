@@ -172,13 +172,13 @@ void Game::drawLevel() {
 
 void Game::updateCharacters() {
 	for (Character &i : characters) {
+
+		//character vars
+		Pointi oldPosition = i.position;
+		int highestCollision = -1;
+		int floorCollisions = 0;
+
 		if (frameCount % 12 == 0) {
-
-			//character vars
-			Pointi oldPosition = i.position;
-			int highestCollision = -1;
-			int floorCollisions = 0;
-
 			for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
 			{
 				if (i.direction == 1) {
@@ -195,9 +195,19 @@ void Game::updateCharacters() {
 			if (highestCollision == -1) { //walking
 				i.walk();
 			}
-			else /*if (highestCollision >= 2)*/ { //turning around
+			else if (highestCollision == 0) {
+				i.position.y += 1;
+				i.walk();
+			}
+			else if (highestCollision == 1) {
+				i.position.y += 2;
+				i.walk();
+			}
+			else { //turning around
 				i.switchDirection();
 			}
+		}
+		if (frameCount % 4 == 0) {
 			//gravity
 			for (int x = 0; x < i.spriteW; x++) //check if there's air under character
 			{
@@ -209,8 +219,8 @@ void Game::updateCharacters() {
 				i.applyGravity();
 			}
 			std::cout << floorCollisions << std::endl;
-			drawCharacter(i, oldPosition);
 		}
+		drawCharacter(i, oldPosition);
 	}
 }
 
