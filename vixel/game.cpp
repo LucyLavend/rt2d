@@ -18,7 +18,11 @@ Game::Game() : SuperScene()
 	materials.push_back(lava);//5
 	materials.push_back(water);//6
 	materials.push_back(acid);//7
+	materials.push_back(chara);//8
 
+	Character c(40, 40);
+	characters.push_back(c);
+	
 	currentMaterial = 1;
 	scrolledAmount = 0;
 	frameCount = 0;
@@ -91,9 +95,9 @@ void Game::update(float deltaTime)
 		
 		//update stuff
 		updateField();
+		updateCharacters();
 		drawLevel();
 		drawUI();
-		updateDefenseGrid();
 
 		// restart frametimer
 		timer.start();
@@ -155,6 +159,7 @@ void Game::drawLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 
+	canvas->fill(RGBAColor(0, 0, 0, 0));
 	//draw screen from array
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
@@ -163,6 +168,69 @@ void Game::drawLevel() {
 
 		}
 	}
+}
+
+void Game::updateCharacters() {
+	for (Character &i : characters) {
+		if (frameCount % 12 == 0) {
+
+			//character vars
+			Pointi oldPosition = i.position;
+			int highestCollision = -1;
+			int floorCollisions = 0;
+
+			for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
+			{
+				if (i.direction == 1) {
+					if (current[getIdFromPos(i.position.x + i.spriteW, i.position.y + y)] != 0) { //check if there's air in front of the character
+						highestCollision = y;
+					}
+				}
+				else {
+					if (current[getIdFromPos(i.position.x - 1, i.position.y + y)] != 0) { //check if there's no air in front of the character
+						highestCollision = y;
+					}
+				}
+			}
+			if (highestCollision == -1) { //walking
+				i.walk();
+			}
+			else /*if (highestCollision >= 2)*/ { //turning around
+				i.switchDirection();
+			}
+			//gravity
+			for (int x = 0; x < i.spriteW; x++) //check if there's air under character
+			{
+				if (current[getIdFromPos(i.position.x + x, i.position.y - 1)] != 0) { //check if there's air in front of the character
+					floorCollisions++;
+				}
+			}
+			if (floorCollisions == 0) {
+				i.applyGravity();
+			}
+			std::cout << floorCollisions << std::endl;
+			drawCharacter(i, oldPosition);
+		}
+	}
+}
+
+void Game::drawCharacter(Character c, Pointi op) {
+
+	for (int x = 0; x < c.spriteW; x++) //clear the character
+	{
+		for (int y = 0; y < c.spriteH; y++)
+		{
+			current[getIdFromPos(op.x + x, op.y + y)] = 0;
+		}
+	}
+	for (int x = 0; x < c.spriteW; x++) //redraw the character
+	{
+		for (int y = 0; y < c.spriteH; y++)
+		{
+			current[getIdFromPos(c.position.x + x, c.position.y + y)] = 8;
+		}
+	}
+
 }
 
 void Game::updateField() {

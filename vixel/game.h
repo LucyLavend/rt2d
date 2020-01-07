@@ -13,6 +13,7 @@
 #include <rt2d/vectorx.h>
 #include <rt2d/canvas.h>
 #include "superscene.h"
+#include "character.h"
 
 class Game: public SuperScene
 {
@@ -38,16 +39,18 @@ private:
 	int scrolledAmount;
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
+	std::vector<Character> characters;
 	std::vector<int> current;
 	std::vector<int> ui;
 
-	void selectMaterialOnUI();
 	void drawUI();
 	void updateField();
 	void setupDefenseGrid();
 	void updateDefenseGrid();
 	void initLevel();
 	void drawLevel();
+	void updateCharacters();
+	void drawCharacter(Character c, Pointi op);
 	void setupDefenseBlock();
 	bool placePixel(int x, int y, int mat);
 
@@ -66,6 +69,7 @@ private:
 	RGBAColor lava = RGBAColor(247, 118, 34, 255);
 	RGBAColor water = RGBAColor(0, 149, 233, 255);
 	RGBAColor acid = RGBAColor(99, 199, 77, 255);
+	RGBAColor chara = RGBAColor(182, 83, 212, 255);
 	
 };
 

@@ -9,15 +9,26 @@
 #define CHARACTER_H
 
 #include <vector>
+#include <vectorx.h>
 
 class Character
 {
 public:
-	Character();
+	Character(int posX, int posY);
 	virtual ~Character();
 
-private:
+	Pointi position;
+	int direction;
+	int spriteW;
+	int spriteH;
+	std::vector<int> characterSprite;
 
+	void walk();
+	void applyGravity();
+	void switchDirection();
+
+private:
+	
 };
 
 #endif /* CHARACTER_H */

@@ -7,9 +7,40 @@
 
 #include "character.h"
 
-Character::Character()
+Character::Character(int posX, int posY)
 {
-	
+	position.x = posX;
+	position.y = posY;
+
+	direction = 1;
+
+	spriteW = 3;
+	spriteH = 5;
+
+	characterSprite = {
+		2,2,2,2,
+		2,2,2,2,
+		2,2,2,2,
+		2,2,2,2,
+		2,2,2,2
+	};
+}
+
+void Character::walk() {
+	position.x += 1 * direction;
+}
+
+void Character::applyGravity() {
+	position.y--;
+}
+
+void Character::switchDirection() {
+	if (direction == 1) {
+		direction = -1;
+	}
+	else {
+		direction = 1;
+	}
 }
 
 
