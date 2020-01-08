@@ -161,6 +161,10 @@ void Game::initLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
+	//reset characters
+	for (Character &i : characters) {
+		i.init();
+	}
 }
 
 void Game::drawLevel() {
