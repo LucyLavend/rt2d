@@ -163,9 +163,7 @@ void Game::drawLevel() {
 	//draw screen from array
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
-			
 			canvas->setPixel(x, y, materials[current[getIdFromPos(x, y)]]);
-
 		}
 	}
 }
@@ -177,33 +175,42 @@ void Game::updateCharacters() {
 		Pointi oldPosition = i.position;
 		int highestCollision = -1;
 		int floorCollisions = 0;
+		int amountOfWater = 0;
 
 		if (frameCount % 12 == 0) {
 			for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
 			{
+				int blockToCheck;
 				if (i.direction == 1) {
-					if (current[getIdFromPos(i.position.x + i.spriteW, i.position.y + y)] != 0) { //check if there's air in front of the character
-						highestCollision = y;
-					}
+					blockToCheck = current[getIdFromPos(i.position.x + i.spriteW, i.position.y + y)];
 				}
 				else {
-					if (current[getIdFromPos(i.position.x - 1, i.position.y + y)] != 0) { //check if there's no air in front of the character
-						highestCollision = y;
+					blockToCheck = current[getIdFromPos(i.position.x - 1, i.position.y + y)];
+				}
+				if (blockToCheck != 0) { //check if there's air in front of the character
+					highestCollision = y;
+					if (blockToCheck == 6) {
+						amountOfWater++;
+					}
+					else if(blockToCheck == 5) { //die in lava
+						i.die();
+						drawCharacter(i, oldPosition);
+						return;
 					}
 				}
 			}
 			if (highestCollision == -1) { //walking
 				i.walk();
 			}
-			else if (highestCollision == 0) {
+			else if (highestCollision == 0) { //walk up one block slope
 				i.position.y += 1;
 				i.walk();
 			}
-			else if (highestCollision == 1) {
+			else if (highestCollision == 1) { //walk up two block slope
 				i.position.y += 2;
 				i.walk();
 			}
-			else { //turning around
+			else { //turn around
 				i.switchDirection();
 			}
 		}
@@ -211,15 +218,36 @@ void Game::updateCharacters() {
 			//gravity
 			for (int x = 0; x < i.spriteW; x++) //check if there's air under character
 			{
-				if (current[getIdFromPos(i.position.x + x, i.position.y - 1)] != 0) { //check if there's air in front of the character
-					floorCollisions++;
+				int blockToCheck = current[getIdFromPos(i.position.x + x, i.position.y - 1)];
+				if (blockToCheck != 0) { //check if there's air in front of the character
+					if (blockToCheck == 5) { //die in lava
+						i.die();
+						drawCharacter(i, oldPosition);
+						return;
+					}
+					else if (blockToCheck == 6) {
+						amountOfWater++;
+					}
+					if (blockToCheck != 6) {
+						floorCollisions++;
+					}
 				}
 			}
-			if (floorCollisions == 0) {
+			if (floorCollisions == 0) { //fall if there are no collisions below the character
 				i.applyGravity();
 			}
-			std::cout << floorCollisions << std::endl;
 		}
+		if (frameCount % 6 == 0) {
+			if (amountOfWater >= i.spriteH) { //check if the character is submerged in water and remove some breath
+				i.breath--;
+			}
+			if (i.breath <= 0) { //drown.
+				i.die();
+				drawCharacter(i, oldPosition);
+				return;
+			}
+		}
+
 		drawCharacter(i, oldPosition);
 	}
 }

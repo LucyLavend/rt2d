@@ -9,21 +9,22 @@
 
 Character::Character(int posX, int posY)
 {
-	position.x = posX;
-	position.y = posY;
-
-	direction = 1;
+	initPosition.y = posX;
+	initPosition.y = posY;
 
 	spriteW = 3;
 	spriteH = 5;
 
-	characterSprite = {
-		2,2,2,2,
-		2,2,2,2,
-		2,2,2,2,
-		2,2,2,2,
-		2,2,2,2
-	};
+	init();
+}
+
+void Character::init() {
+	position = initPosition;
+	awake = false;
+	direction = 1;
+
+	breath = 10;
+	airTime = 0;
 }
 
 void Character::walk() {
@@ -32,6 +33,7 @@ void Character::walk() {
 
 void Character::applyGravity() {
 	position.y--;
+	airTime++;
 }
 
 void Character::switchDirection() {
@@ -41,6 +43,12 @@ void Character::switchDirection() {
 	else {
 		direction = 1;
 	}
+}
+
+void Character::die() {
+	position = initPosition;
+	init();
+	std::cout << "DEATH" << std::endl;
 }
 
 

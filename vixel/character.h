@@ -18,14 +18,19 @@ public:
 	virtual ~Character();
 
 	Pointi position;
+	Pointi initPosition;
+	bool awake;
 	int direction;
 	int spriteW;
 	int spriteH;
-	std::vector<int> characterSprite;
+	int breath;
+	int airTime;
 
+	void init();
 	void walk();
 	void applyGravity();
 	void switchDirection();
+	void die();
 
 private:
 	
