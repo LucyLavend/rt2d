@@ -314,20 +314,22 @@ void Game::updateField() {
 			//fire logic
 			else if (frameCount % 4 == 0 && current[pixel] == 4) {
 				if (pixelAbove > -1 && current[pixelAbove] == 2) { //find wood
-					next[pixel] = 0;
 					next[pixelAbove] = 4;
 				}
 				if (pixelBelow > -1 && current[pixelBelow] == 2) {
-					next[pixel] = 0;
 					next[pixelBelow] = 4;
 				}
 				if (pixelLeft > -1 && current[pixelLeft] == 2) {
-					next[pixel] = 0;
 					next[pixelLeft] = 4;
 				}
 				if (pixelRight > -1 && current[pixelRight] == 2) {
-					next[pixel] = 0;
 					next[pixelRight] = 4;
+				}
+				if (rand() % 10 == 1) {
+					next[pixel] = 0;
+				}
+				else {
+					next[pixel] = 4;
 				}
 			}
 
