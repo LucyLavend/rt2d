@@ -38,7 +38,7 @@ Game::Game() : SuperScene()
 	layers[0]->addChild(canvas);
 	layers[1]->addChild(uiCanvas);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Character c(rand() % (canvas->width()- 20), rand() % (canvas->height() - 20));
 		characters.push_back(c);
@@ -194,15 +194,29 @@ void Game::updateCharacters() {
 			if (frameCount % 12 == 0) {
 				for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
 				{
+					int leftId = getIdFromPos(i.position.x - 1, i.position.y + y);
+					int rightId = getIdFromPos(i.position.x + i.spriteW, i.position.y + y);
+
 					int blockToCheck;
 					if (i.direction == 1) {
-						blockToCheck = current[getIdFromPos(i.position.x + i.spriteW, i.position.y + y)];
+						if (rightId != -1) {
+							blockToCheck = current[rightId];
+						}
+						else {
+							blockToCheck = 100;
+						}
 					}
 					else {
-						blockToCheck = current[getIdFromPos(i.position.x - 1, i.position.y + y)];
+						if (leftId != -1) {
+							blockToCheck = current[leftId];
+						}
+						else {
+							blockToCheck = 100;
+						}
 					}
 					if (blockToCheck != 0) { //check if there's air in front of the character
 						highestCollision = y;
+
 						if (blockToCheck == 6) {
 							amountOfWater++;
 						}
@@ -226,25 +240,32 @@ void Game::updateCharacters() {
 				}
 				else { //turn around
 					i.switchDirection();
+					std::cout << "turn" << std::endl;
 				}
 			}
 			if (frameCount % 4 == 0) {
 				//gravity
 				for (int x = 0; x < i.spriteW; x++) //check if there's air under character
 				{
-					int blockToCheck = current[getIdFromPos(i.position.x + x, i.position.y - 1)];
-					if (blockToCheck != 0) { //check if there's air in front of the character
-						if (blockToCheck == 5) { //die in lava
-							i.die();
-							drawCharacter(i, oldPosition);
-							return;
+					int belowId = getIdFromPos(i.position.x + x, i.position.y - 1);
+					if (belowId != -1) {
+						int blockToCheck = current[belowId];
+						if (blockToCheck != 0) { //check if there's air in front of the character
+							if (blockToCheck == 5) { //die in lava
+								i.die();
+								drawCharacter(i, oldPosition);
+								return;
+							}
+							else if (blockToCheck == 6) {
+								amountOfWater++;
+							}
+							if (blockToCheck != 6 || belowId == -1) {
+								floorCollisions++;
+							}
 						}
-						else if (blockToCheck == 6) {
-							amountOfWater++;
-						}
-						if (blockToCheck != 6) {
-							floorCollisions++;
-						}
+					}
+					else {
+						floorCollisions++;
 					}
 				}
 				if (floorCollisions == 0) { //fall if there are no collisions below the character
