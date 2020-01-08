@@ -9,7 +9,7 @@
 
 Character::Character(int posX, int posY)
 {
-	initPosition.y = posX;
+	initPosition.x = posX;
 	initPosition.y = posY;
 
 	spriteW = 3;
