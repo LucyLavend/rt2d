@@ -129,6 +129,19 @@ void Game::update(float deltaTime)
 			c.awake = true;
 		}
 	}
+	//increase or decrease level
+	if (input()->getKeyDown(KeyCode(91))) { //left bracket
+		if (level > 1) {
+			level--;
+			initLevel();
+		}
+	}
+	else if (input()->getKeyDown(KeyCode(93))) { //right bracket
+		if (level < 2) {
+			level++;
+			initLevel();
+		}
+	}
 	//fill key
 	if (input()->getKeyDown(KeyCode('M'))) {
 		for (int i = 0; i < current.size(); i++)
