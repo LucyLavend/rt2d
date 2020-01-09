@@ -1,7 +1,7 @@
 /**
- * This is level one of the game "Vixel"
+ * This file is part of the game Vixel in the RT2D framework.
  *
- * 
+ * - Copyright 2019 Lucy Jongebloed
  */
 
 #include <time.h>
@@ -38,7 +38,7 @@ Game::Game() : SuperScene()
 	layers[0]->addChild(canvas);
 	layers[1]->addChild(uiCanvas);
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		Character c(rand() % (canvas->width()- 20), rand() % (canvas->height() - 20));
 		characters.push_back(c);
@@ -240,7 +240,6 @@ void Game::updateCharacters() {
 				}
 				else { //turn around
 					i.switchDirection();
-					std::cout << "turn" << std::endl;
 				}
 			}
 			if (frameCount % 4 == 0) {
