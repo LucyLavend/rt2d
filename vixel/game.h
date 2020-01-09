@@ -37,11 +37,14 @@ private:
 	int frameCount;
 	int currentMaterial;
 	int scrolledAmount;
+	int level;
 	size_t pixelsize;
 	std::vector<PixelSprite> defense_blocks;
 	std::vector<Character> characters;
 	std::vector<int> current;
 	std::vector<int> ui;
+
+	Sprite* levelImage;
 
 	void drawUI();
 	void updateField();
@@ -53,6 +56,7 @@ private:
 	void drawCharacter(Character c, Pointi op);
 	void setupDefenseBlock();
 	bool placePixel(int x, int y, int mat);
+	std::vector<int> createMapFromImage();
 
 	PixelSprite defense_block;
 

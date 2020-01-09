@@ -24,6 +24,8 @@ Game::Game() : SuperScene()
 	scrolledAmount = 0;
 	frameCount = 0;
 
+	level = 1;
+
 	srand((unsigned)time(nullptr));
 
 	text[0]->message("Game");
@@ -38,7 +40,7 @@ Game::Game() : SuperScene()
 	layers[0]->addChild(canvas);
 	layers[1]->addChild(uiCanvas);
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		Character c(rand() % (canvas->width()- 20), rand() % (canvas->height() - 20));
 		c.spriteW = rand() % 12 + 3;
@@ -163,10 +165,43 @@ void Game::initLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
+	current = createMapFromImage();
 	//reset characters
 	for (Character &i : characters) {
 		i.init();
 	}
+}
+
+std::vector<int> Game::createMapFromImage() {
+	const int w = canvas->width();
+	const int h = canvas->height();
+	std::vector<int> result = std::vector<int>(w * h, 0);
+
+	levelImage = new Sprite();
+	std::string levelDir = "levels/level" + std::to_string(level) + ".tga";
+	levelImage->setupSpriteTGAPixelBuffer(levelDir, 1, 0);
+
+	PixelBuffer* pixels = levelImage->texture()->pixels();
+	int counter = 0;
+	for (int y = 0; y < canvas->height(); y++) {
+		for (int x = 0; x < canvas->width(); x++) {
+			if (getIdFromPos(x, y) != -1) {
+				int r = pixels->data[counter + 0];
+				int g = pixels->data[counter + 1];
+				int b = pixels->data[counter + 2];
+				//loop over materials to find the right one
+				for (int i = 0; i < materials.size(); i++)
+				{
+					//compare color
+					if (r == materials[i].r && g == materials[i].g && b == materials[i].b) {
+						result[getIdFromPos(x, y)] = i;
+					}
+				}
+				counter += pixels->bitdepth;
+			}
+		}
+	}
+	return result;
 }
 
 void Game::drawLevel() {
