@@ -41,6 +41,8 @@ Game::Game() : SuperScene()
 	for (int i = 0; i < 2; i++)
 	{
 		Character c(rand() % (canvas->width()- 20), rand() % (canvas->height() - 20));
+		c.spriteW = rand() % 12 + 3;
+		c.spriteH = rand() % 12 + 3;
 		characters.push_back(c);
 	}
 
