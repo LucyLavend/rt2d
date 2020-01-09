@@ -189,7 +189,7 @@ IF(MAKE_VIXEL)
 	)
 	# Copy assets to the build directory
 	file(
-		COPY vixel/levelassets
+		COPY vixel/levels
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 ENDIF()
