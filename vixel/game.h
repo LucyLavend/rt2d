@@ -39,7 +39,6 @@ private:
 	int scrolledAmount;
 	int level;
 	size_t pixelsize;
-	std::vector<PixelSprite> defense_blocks;
 	std::vector<Character> characters;
 	std::vector<int> current;
 	std::vector<int> ui;
@@ -48,13 +47,10 @@ private:
 
 	void drawUI();
 	void updateField();
-	void setupDefenseGrid();
-	void updateDefenseGrid();
 	void initLevel();
 	void drawLevel();
 	void updateCharacters();
 	void drawCharacter(Character c, Pointi op);
-	void setupDefenseBlock();
 	bool placePixel(int x, int y, int mat);
 	std::vector<int> createMapFromImage();
 
