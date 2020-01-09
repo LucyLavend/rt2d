@@ -48,7 +48,6 @@ void Character::switchDirection() {
 void Character::die() {
 	position = initPosition;
 	init();
-	std::cout << "DEATH" << std::endl;
 }
 
 

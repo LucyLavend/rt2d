@@ -50,7 +50,6 @@ Game::Game() : SuperScene()
 
 	initLevel();
 	drawUI();
-	setupDefenseBlock();
 }
 
 Game::~Game()
@@ -83,9 +82,7 @@ void Game::drawUI() {
 
 void Game::update(float deltaTime)
 {
-	// ###############################################################
 	// Make SuperScene do what it needs to do (Escape key stops Scene)
-	// ###############################################################
 	SuperScene::update(deltaTime);
 
 	std::stringstream titletxt;
@@ -94,9 +91,7 @@ void Game::update(float deltaTime)
 
 	text[10]->message(""); // clear player click count message
 
-	// ###############################################################
 	// Update and draw only when it's time
-	// ###############################################################
 	float tsec = timer.seconds();
 	if (tsec > 0.01 - deltaTime) { // Game update time
 		
@@ -186,6 +181,8 @@ void Game::initLevel() {
 }
 
 std::vector<int> Game::createMapFromImage() {
+
+	characters.clear();
 	const int w = canvas->width();
 	const int h = canvas->height();
 	std::vector<int> result = std::vector<int>(w * h, 0);
@@ -202,12 +199,21 @@ std::vector<int> Game::createMapFromImage() {
 				int r = pixels->data[counter + 0];
 				int g = pixels->data[counter + 1];
 				int b = pixels->data[counter + 2];
+				//check if there a character via the red channel, then use green and blue to change the size of the character
+				if (r == 12) {
+					Character c(x, y);
+					c.spriteW = g;
+					c.spriteH = b;
+					characters.push_back(c);
+				}
 				//loop over materials to find the right one
-				for (int i = 0; i < materials.size(); i++)
-				{
-					//compare color
-					if (r == materials[i].r && g == materials[i].g && b == materials[i].b) {
-						result[getIdFromPos(x, y)] = i;
+				else {
+					for (int i = 0; i < materials.size(); i++)
+					{
+						//compare color
+						if (r == materials[i].r && g == materials[i].g && b == materials[i].b) {
+							result[getIdFromPos(x, y)] = i;
+						}
 					}
 				}
 				counter += pixels->bitdepth;
@@ -585,40 +591,4 @@ bool Game::placePixel(int x, int y, int mat) {
 		}
 	}
 	return true;
-}
-
-void Game::updateDefenseGrid()
-{
-	size_t s = defense_blocks.size();
-	for (size_t i = 0; i < s; i++) {
-		canvas->drawSprite(defense_blocks[i]);
-	}
-}
-
-void Game::setupDefenseGrid()
-{
-	defense_blocks.clear();
-	size_t num = 16;
-	int spacing = 6;
-	for (size_t x = 0; x < num; x++) {
-		PixelSprite d = defense_block; // copy sprites etc
-		d.position = Pointi((x*spacing)+16, 16);
-		defense_blocks.push_back(d);
-	}
-}
-
-// ###########################################################################
-// setup all sprites
-
-void Game::setupDefenseBlock()
-{
-	char defenseBlockSprite[16] = {
-		1,1,1,1,
-		1,0,0,1,
-		1,0,0,1,
-		1,1,1,1,
-	};
-
-	defense_block.init(defenseBlockSprite, 4, 4);
-	defense_block.position = Pointi(canvas->width() / 2, canvas->height() / 3);
 }
