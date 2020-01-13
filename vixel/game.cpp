@@ -19,6 +19,7 @@ Game::Game() : SuperScene()
 	materials.push_back(water);//6
 	materials.push_back(acid);//7
 	materials.push_back(chara);//8
+	materials.push_back(grass);//9
 
 	currentMaterial = 1;
 	scrolledAmount = 0;
@@ -126,7 +127,7 @@ void Game::update(float deltaTime)
 	}
 	//increase or decrease level
 	if (input()->getKeyDown(KeyCode(91))) { //left bracket
-		if (level > 1) {
+		if (level > 0) {
 			level--;
 			initLevel();
 		}
@@ -378,14 +379,31 @@ void Game::updateField() {
 
 			//dirt logic
 			if (frameCount % 2 == 0 && current[pixel] == 1) {
-				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) { //ignore air, water
+				if (pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6 || current[pixelBelow] == 5)) { //ignore air, water and lava
 					next[pixel] = 0;
 					next[pixelBelow] = 1;
+				}
+				else if ((pixelBelow == -1 || current[pixelBelow] == 1) && pixelAbove != -1 && current[pixelAbove] == 0 && (rand() % 50) == 1) { //create grass ontop
+					next[pixel] = 9;
 				}
 				else {
 					next[pixel] = 1;
 				}
 			}
+
+			////grass logic
+			//if (frameCount % 2 == 0 && current[pixel] == 9) {
+			//	if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //ignore air, water and lava
+			//		//next[pixel] = 0;
+			//		//next[pixelBelow] = 6;
+			//	}
+			//	else if (pixelAbove == -1 || current[pixelAbove] != 0) { //ignore air, water and lava
+			//		//next[pixel] = 1;
+			//	}
+			//	else {
+			//		//next[pixel] = 9;
+			//	}
+			//}
 
 			//fire logic
 			else if (frameCount % 4 == 0 && current[pixel] == 4) {
