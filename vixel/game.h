@@ -14,6 +14,7 @@
 #include <rt2d/canvas.h>
 #include "superscene.h"
 #include "character.h"
+#include "home.h"
 
 class Game: public SuperScene
 {
@@ -40,6 +41,7 @@ private:
 	int level;
 	size_t pixelsize;
 	std::vector<Character> characters;
+	std::vector<Home> homes;
 	std::vector<int> current;
 	std::vector<int> ui;
 
@@ -51,6 +53,8 @@ private:
 	void drawLevel();
 	void updateCharacters();
 	void drawCharacter(Character c, Pointi op);
+	void updateHomes();
+	void drawHome(Home h);
 	bool placePixel(int x, int y, int mat);
 	std::vector<int> createMapFromImage();
 
@@ -71,6 +75,7 @@ private:
 	RGBAColor acid = RGBAColor(99, 199, 77, 255);
 	RGBAColor chara = RGBAColor(182, 83, 212, 255);
 	RGBAColor grass = RGBAColor(62, 137, 72, 255);
+	RGBAColor home = RGBAColor(102, 77, 77, 255);
 	
 };
 

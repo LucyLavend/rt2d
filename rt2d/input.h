@@ -96,7 +96,7 @@ enum KeyCode
 	Up = 265,
 	PageUp = 266,
 	PageDown = 267,
-	Home = 268,
+	HomeKey = 268,
 	End = 269,
 	CapsLock = 280,
 	ScrollLock = 281,

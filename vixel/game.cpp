@@ -20,12 +20,13 @@ Game::Game() : SuperScene()
 	materials.push_back(acid);//7
 	materials.push_back(chara);//8
 	materials.push_back(grass);//9
+	materials.push_back(home);//10
 
 	currentMaterial = 1;
 	scrolledAmount = 0;
 	frameCount = 0;
 
-	level = 1;
+	level = 0;
 
 	srand((unsigned)time(nullptr));
 
@@ -40,14 +41,6 @@ Game::Game() : SuperScene()
 	uiCanvas = new Canvas(pixelsize);
 	layers[0]->addChild(canvas);
 	layers[1]->addChild(uiCanvas);
-
-	for (int i = 0; i < 0; i++)
-	{
-		Character c(rand() % (canvas->width()- 20), rand() % (canvas->height() - 20));
-		c.spriteW = rand() % 12 + 3;
-		c.spriteH = rand() % 12 + 3;
-		characters.push_back(c);
-	}
 
 	initLevel();
 	drawUI();
@@ -99,6 +92,7 @@ void Game::update(float deltaTime)
 		//update stuff
 		updateField();
 		updateCharacters();
+		updateHomes();
 		drawLevel();
 		drawUI();
 
@@ -201,11 +195,18 @@ std::vector<int> Game::createMapFromImage() {
 				int g = pixels->data[counter + 1];
 				int b = pixels->data[counter + 2];
 				//check if there a character via the red channel, then use green and blue to change the size of the character
-				if (r == 12) {
+				if (r == 1) {
 					Character c(x, y);
 					c.spriteW = g;
 					c.spriteH = b;
 					characters.push_back(c);
+				}
+				//check if there a home via the red channel, then use green and blue to change the size of the home
+				else if (r == 222) {
+					Home h(x, y);
+					h.spriteW = g;
+					h.spriteH = b;
+					homes.push_back(h);
 				}
 				//loop over materials to find the right one
 				else {
@@ -229,7 +230,6 @@ void Game::drawLevel() {
 	const int w = canvas->width();
 	const int h = canvas->height();
 
-	canvas->fill(RGBAColor(0, 0, 0, 0));
 	//draw screen from array
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
@@ -360,6 +360,26 @@ void Game::drawCharacter(Character c, Pointi op) {
 		}
 	}
 
+}
+
+void Game::updateHomes() {
+	for (Home &i : homes) {
+		drawHome(i);
+	}
+}
+
+void Game::drawHome(Home h) {
+
+	for (int x = 0; x < h.spriteW; x++) //draw the home
+	{
+		for (int y = 0; y < h.spriteH; y++)
+		{
+			int pos = getIdFromPos(h.position.x + x, h.position.y + y);
+			if (pos != -1 && current[pos] != 2) {
+				current[pos] = 10;
+			}
+		}
+	}
 }
 
 void Game::updateField() {
