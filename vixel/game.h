@@ -39,6 +39,7 @@ private:
 	int currentMaterial;
 	int scrolledAmount;
 	int level;
+	int totalLevelCount;
 	size_t pixelsize;
 	std::vector<Character> characters;
 	std::vector<Home> homes;

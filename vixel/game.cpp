@@ -27,6 +27,7 @@ Game::Game() : SuperScene()
 	frameCount = 0;
 
 	level = 0;
+	totalLevelCount = 3;
 
 	srand((unsigned)time(nullptr));
 
@@ -91,8 +92,8 @@ void Game::update(float deltaTime)
 		
 		//update stuff
 		updateField();
-		updateCharacters();
 		updateHomes();
+		updateCharacters();
 		drawLevel();
 		drawUI();
 
@@ -127,7 +128,7 @@ void Game::update(float deltaTime)
 		}
 	}
 	else if (input()->getKeyDown(KeyCode(93))) { //right bracket
-		if (level < 2) {
+		if (level < totalLevelCount) {
 			level++;
 			initLevel();
 		}
@@ -178,6 +179,7 @@ void Game::initLevel() {
 std::vector<int> Game::createMapFromImage() {
 
 	characters.clear();
+	homes.clear();
 	const int w = canvas->width();
 	const int h = canvas->height();
 	std::vector<int> result = std::vector<int>(w * h, 0);
@@ -271,7 +273,7 @@ void Game::updateCharacters() {
 							blockToCheck = 100;
 						}
 					}
-					if (blockToCheck != 0) { //check if there's air in front of the character
+					if (blockToCheck != 0 && blockToCheck != 10) { //check if there's air in front of the character
 						highestCollision = y;
 
 						if (blockToCheck == 6) {
@@ -306,7 +308,7 @@ void Game::updateCharacters() {
 					int belowId = getIdFromPos(i.position.x + x, i.position.y - 1);
 					if (belowId != -1) {
 						int blockToCheck = current[belowId];
-						if (blockToCheck != 0) { //check if there's air in front of the character
+						if (blockToCheck != 0 && blockToCheck != 10) { //check if there's air in front of the character
 							if (blockToCheck == 5) { //die in lava
 								i.die();
 								drawCharacter(i, oldPosition);
