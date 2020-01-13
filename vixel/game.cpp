@@ -26,8 +26,8 @@ Game::Game() : SuperScene()
 	scrolledAmount = 0;
 	frameCount = 0;
 
-	level = 0;
-	totalLevelCount = 3;
+	level = 4;
+	totalLevelCount = 4;
 
 	srand((unsigned)time(nullptr));
 
@@ -413,19 +413,19 @@ void Game::updateField() {
 				}
 			}
 
-			////grass logic
-			//if (frameCount % 2 == 0 && current[pixel] == 9) {
-			//	if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //ignore air, water and lava
-			//		//next[pixel] = 0;
-			//		//next[pixelBelow] = 6;
-			//	}
-			//	else if (pixelAbove == -1 || current[pixelAbove] != 0) { //ignore air, water and lava
-			//		//next[pixel] = 1;
-			//	}
-			//	else {
-			//		//next[pixel] = 9;
-			//	}
-			//}
+			//grass logic
+			else if (frameCount % 2 == 0 && current[pixel] == 9) {
+				if (pixelBelow > -1 && (current[pixelBelow] == 0)) { //ignore air, water and lava
+					next[pixel] = 0;
+					next[pixelBelow] = 1;
+				}
+				else if (pixelAbove == -1 || current[pixelAbove] != 0) { //ignore air, water and lava
+					next[pixel] = 1;
+				}
+				else {
+					next[pixel] = 9;
+				}
+			}
 
 			//fire logic
 			else if (frameCount % 4 == 0 && current[pixel] == 4) {

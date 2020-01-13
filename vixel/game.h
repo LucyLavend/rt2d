@@ -76,7 +76,7 @@ private:
 	RGBAColor acid = RGBAColor(99, 199, 77, 255);
 	RGBAColor chara = RGBAColor(182, 83, 212, 255);
 	RGBAColor grass = RGBAColor(62, 137, 72, 255);
-	RGBAColor home = RGBAColor(102, 77, 77, 255);
+	RGBAColor home = RGBAColor(102, 11, 111, 255);
 	
 };
 
