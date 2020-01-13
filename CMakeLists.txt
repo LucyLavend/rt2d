@@ -177,6 +177,8 @@ IF(MAKE_VIXEL)
 		vixel/main.cpp
 		vixel/character.cpp
 		vixel/character.h
+		vixel/home.cpp
+		vixel/home.h
 		vixel/basicentity.cpp
 		vixel/basicentity.h
 		vixel/superscene.cpp
