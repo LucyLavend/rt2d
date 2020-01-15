@@ -12,6 +12,8 @@ Character::Character(int posX, int posY)
 	initPosition.x = posX;
 	initPosition.y = posY;
 
+	home = false;
+
 	spriteW = 3;
 	spriteH = 5;
 

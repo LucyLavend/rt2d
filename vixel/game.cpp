@@ -20,7 +20,8 @@ Game::Game() : SuperScene()
 	materials.push_back(acid);//7
 	materials.push_back(chara);//8
 	materials.push_back(grass);//9
-	materials.push_back(home);//10
+	materials.push_back(homeInactive);//10
+	materials.push_back(homeActive);//11
 
 	currentMaterial = 1;
 	useableMaterialsCap = 8;
@@ -249,6 +250,7 @@ void Game::updateCharacters() {
 		int highestCollision = -1;
 		int floorCollisions = 0;
 		int amountOfWater = 0;
+		int homeAmount = 0;
 
 		if (i.awake) {
 			if (frameCount % 12 == 0) {
@@ -277,13 +279,15 @@ void Game::updateCharacters() {
 					if (blockToCheck != 0 && blockToCheck != 10) { //check if there's air in front of the character
 						highestCollision = y;
 
-						if (blockToCheck == 6) {
+						if (blockToCheck == 6) { //water
 							amountOfWater++;
+						}
+						else if (blockToCheck == 11) { //water
+							homeAmount++;
 						}
 						else if (blockToCheck == 5) { //die in lava
 							i.die();
 							drawCharacter(i, oldPosition);
-							return;
 						}
 					}
 				}
@@ -309,11 +313,10 @@ void Game::updateCharacters() {
 					int belowId = getIdFromPos(i.position.x + x, i.position.y - 1);
 					if (belowId != -1) {
 						int blockToCheck = current[belowId];
-						if (blockToCheck != 0 && blockToCheck != 10) { //check if there's air in front of the character
+						if (blockToCheck != 0 && blockToCheck != 10 && blockToCheck != 11) { //check if there's air in front of the character
 							if (blockToCheck == 5) { //die in lava
 								i.die();
 								drawCharacter(i, oldPosition);
-								return;
 							}
 							else if (blockToCheck == 6) {
 								amountOfWater++;
@@ -338,15 +341,24 @@ void Game::updateCharacters() {
 				if (i.breath <= 0) { //drown.
 					i.die();
 					drawCharacter(i, oldPosition);
-					return;
 				}
 			}
 		}
-		drawCharacter(i, oldPosition);
+		//home check
+		if (homeAmount >= i.spriteH) {
+			clearCharacter(i, oldPosition);
+			i.awake = false;
+			i.home = true;
+		}
+		//draw character
+		if (!i.home) {
+			clearCharacter(i, oldPosition);
+			drawCharacter(i, oldPosition);
+		}
 	}
 }
 
-void Game::drawCharacter(Character c, Pointi op) {
+void Game::clearCharacter(Character c, Pointi op) {
 
 	for (int x = 0; x < c.spriteW; x++) //clear the character
 	{
@@ -355,24 +367,61 @@ void Game::drawCharacter(Character c, Pointi op) {
 			current[getIdFromPos(op.x + x, op.y + y)] = 0;
 		}
 	}
-	for (int x = 0; x < c.spriteW; x++) //redraw the character
+}
+
+void Game::drawCharacter(Character c, Pointi op) {
+
+	for (int x = 0; x < c.spriteW; x++) //draw the character
 	{
 		for (int y = 0; y < c.spriteH; y++)
 		{
 			current[getIdFromPos(c.position.x + x, c.position.y + y)] = 8;
 		}
 	}
-
 }
 
 void Game::updateHomes() {
-	for (Home &i : homes) {
+	for (Home &h : homes) {
 
-		drawHome(i);
+		int woodAmount = 0;
+		bool active = false;
+
+		//loop through top and bottom row to find wood
+		for (int x = 0; x < h.spriteW; x++)
+		{
+			int blockAbove = getIdFromPos(h.position.x + x, h.position.y - 1);
+			int blockBelow = getIdFromPos(h.position.x + x, h.position.y + h.spriteH + 1);
+
+			if (blockAbove != -1 && current[blockAbove] == 2) {
+				woodAmount++;
+			}
+			if (blockBelow == -1 || current[blockBelow] == 2) {
+				woodAmount++;
+			}
+		}
+		//loop through sides to find wood
+		for (int y = 0; y < h.spriteH; y++)
+		{
+			int blockLeft = getIdFromPos(h.position.x - 1, h.position.y + y);
+			int blockRight = getIdFromPos(h.position.x + h.spriteW + 1, h.position.y + y);
+
+			if (blockLeft != -1 && current[blockLeft] == 2) {
+				woodAmount++;
+			}
+			if (blockRight != -1 && current[blockRight] == 2) {
+				woodAmount++;
+			}
+		}
+		//------
+		if (woodAmount >= (h.spriteH + h.spriteW * 2)) {
+			active = true;
+		}
+
+		drawHome(h, active);
 	}
 }
 
-void Game::drawHome(Home h) {
+void Game::drawHome(Home h, bool active) {
 
 	for (int x = 0; x < h.spriteW; x++) //draw the home
 	{
@@ -380,7 +429,12 @@ void Game::drawHome(Home h) {
 		{
 			int pos = getIdFromPos(h.position.x + x, h.position.y + y);
 			if (pos != -1 && current[pos] != 2 && current[pos] != 4) {
-				current[pos] = 10;
+				if (active) {
+					current[pos] = 11;
+				}
+				else {
+					current[pos] = 10;
+				}
 			}
 		}
 	}

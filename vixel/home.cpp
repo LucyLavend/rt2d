@@ -15,6 +15,8 @@ Home::Home(int posX, int posY)
 	spriteW = 3;
 	spriteH = 5;
 
+	active = false;
+
 	init();
 }
 

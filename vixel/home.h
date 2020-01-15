@@ -22,6 +22,7 @@ public:
 	int direction;
 	int spriteW;
 	int spriteH;
+	bool active;
 
 	void init();
 

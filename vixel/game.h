@@ -54,9 +54,10 @@ private:
 	void initLevel();
 	void drawLevel();
 	void updateCharacters();
+	void clearCharacter(Character c, Pointi op);
 	void drawCharacter(Character c, Pointi op);
 	void updateHomes();
-	void drawHome(Home h);
+	void drawHome(Home h, bool active);
 	bool placePixel(int x, int y, int mat);
 	std::vector<int> createMapFromImage();
 
@@ -77,7 +78,8 @@ private:
 	RGBAColor acid = RGBAColor(99, 199, 77, 255);
 	RGBAColor chara = RGBAColor(182, 83, 212, 255);
 	RGBAColor grass = RGBAColor(62, 137, 72, 255);
-	RGBAColor home = RGBAColor(102, 11, 111, 255);
+	RGBAColor homeInactive = RGBAColor(102, 11, 111, 255);
+	RGBAColor homeActive = RGBAColor(210, 66, 210, 255);
 	
 };
 

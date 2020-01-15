@@ -20,6 +20,7 @@ public:
 	Pointi position;
 	Pointi initPosition;
 	bool awake;
+	bool home;
 	int direction;
 	int spriteW;
 	int spriteH;
