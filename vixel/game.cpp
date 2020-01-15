@@ -23,6 +23,7 @@ Game::Game() : SuperScene()
 	materials.push_back(home);//10
 
 	currentMaterial = 1;
+	useableMaterialsCap = 8;
 	scrolledAmount = 0;
 	frameCount = 0;
 
@@ -56,10 +57,10 @@ Game::~Game()
 }
 
 void Game::drawUI() {
-	for (int i = 0; i < materials.size(); i++)
+	for (int i = 0; i < useableMaterialsCap; i++)
 	{
 		//reverse order for a nicer look
-		RGBAColor mat = materials[materials.size() - 1 - i];
+		RGBAColor mat = materials[useableMaterialsCap - 1 - i];
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 5, mat);
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 5, mat);
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 6, mat);
@@ -71,8 +72,8 @@ void Game::drawUI() {
 		//draw background
 	}
 	//draw selected material underline
-	uiCanvas->setPixel(uiCanvas->width() - 2 * (materials.size() - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
-	uiCanvas->setPixel(uiCanvas->width() - 2 * (materials.size() - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
+	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
+	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
 }
 
 void Game::update(float deltaTime)
@@ -147,9 +148,9 @@ void Game::update(float deltaTime)
 		scrolledAmount += input()->mouseScrollY;
 
 		if(scrolledAmount < 0){
-			scrolledAmount = materials.size() - 1;
+			scrolledAmount = useableMaterialsCap - 1;
 		}
-		if (scrolledAmount > materials.size() - 1) {
+		if (scrolledAmount > useableMaterialsCap - 1) {
 			scrolledAmount = 0;
 		}
 		currentMaterial = scrolledAmount;
@@ -157,7 +158,7 @@ void Game::update(float deltaTime)
 	//select material on number key press
 	for (int i = 0; i <= 9; i++)
 	{
-		if (input()->getKeyDown(KeyCode(49 + i)) && i < materials.size()) { // KeyCode 49 is Alpha1
+		if (input()->getKeyDown(KeyCode(49 + i)) && i < useableMaterialsCap) { // KeyCode 49 is Alpha1
 			currentMaterial = i;
 			text[3]->message("Material: " + std::to_string(currentMaterial));
 			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
@@ -366,6 +367,7 @@ void Game::drawCharacter(Character c, Pointi op) {
 
 void Game::updateHomes() {
 	for (Home &i : homes) {
+
 		drawHome(i);
 	}
 }
@@ -377,7 +379,7 @@ void Game::drawHome(Home h) {
 		for (int y = 0; y < h.spriteH; y++)
 		{
 			int pos = getIdFromPos(h.position.x + x, h.position.y + y);
-			if (pos != -1 && current[pos] != 2) {
+			if (pos != -1 && current[pos] != 2 && current[pos] != 4) {
 				current[pos] = 10;
 			}
 		}

@@ -37,6 +37,7 @@ private:
 
 	int frameCount;
 	int currentMaterial;
+	int useableMaterialsCap;
 	int scrolledAmount;
 	int level;
 	int totalLevelCount;
