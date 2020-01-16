@@ -28,7 +28,7 @@ Game::Game() : SuperScene()
 	scrolledAmount = 0;
 	frameCount = 0;
 
-	level = 4;
+	level = 0;
 	totalLevelCount = 4;
 
 	srand((unsigned)time(nullptr));
@@ -309,28 +309,29 @@ void Game::updateCharacters() {
 						}
 					}
 					if (blockToCheck != 0 && blockToCheck != 10) { //check if there's air in front of the character
-						highestCollision = y;
 
 						if (blockToCheck == 6) { //water
 							amountOfWater++;
 						}
-						else if (blockToCheck == 11) { //water
+						else if (blockToCheck == 11) { //home
 							homeAmount++;
 						}
 						else if (blockToCheck == 5) { //die in lava
 							i.die();
 							drawCharacter(i, oldPosition);
 						}
+
+						highestCollision = y;
 					}
 				}
 				if (highestCollision == -1) { //walking
 					i.walk();
 				}
-				else if (highestCollision == 0) { //walk up one block slope
+				else if (highestCollision == 0 && i.spriteH > 1) { //walk up one block slope
 					i.position.y += 1;
 					i.walk();
 				}
-				else if (highestCollision == 1) { //walk up two block slope
+				else if (highestCollision == 1 && i.spriteH > 2) { //walk up two block slope
 					i.position.y += 2;
 					i.walk();
 				}
