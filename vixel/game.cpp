@@ -75,6 +75,17 @@ void Game::drawUI() {
 	//draw selected material underline
 	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
 	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
+
+	//draw home state of all characters
+	for (int x = 0; x < characters.size(); x++) {
+
+		if (characters[x].home) {
+			uiCanvas->setPixel(uiCanvas->width() - x * 2 - 4, uiCanvas->height() - 3, WHITE);
+		}
+		else {
+			uiCanvas->setPixel(uiCanvas->width() - x * 2 - 4, uiCanvas->height() - 3, RGBAColor(100, 100, 100, 255));
+		}
+	}
 }
 
 void Game::update(float deltaTime)
