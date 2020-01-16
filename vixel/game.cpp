@@ -109,6 +109,7 @@ void Game::update(float deltaTime)
 		updateCharacters();
 		drawLevel();
 		drawUI();
+		checkLevelProgress();
 
 		// restart frametimer
 		timer.start();
@@ -186,6 +187,25 @@ void Game::initLevel() {
 	//reset characters
 	for (Character &i : characters) {
 		i.init();
+	}
+}
+
+void Game::checkLevelProgress() {
+
+	if (characters.size() != 0) {
+		int chraractersHome = 0;
+
+		for (Character &c : characters) {
+			if (c.home) {
+				chraractersHome++;
+			}
+		}
+		if (chraractersHome >= characters.size()) {
+			if (level < totalLevelCount) {
+				level++;
+				initLevel();
+			}
+		}
 	}
 }
 

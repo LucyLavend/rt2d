@@ -52,6 +52,7 @@ private:
 	void drawUI();
 	void updateField();
 	void initLevel();
+	void checkLevelProgress();
 	void drawLevel();
 	void updateCharacters();
 	void clearCharacter(Character c, Pointi op);
