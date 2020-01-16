@@ -507,7 +507,7 @@ void Game::updateField() {
 					next[pixel] = 0;
 					next[pixelBelow] = 1;
 				}
-				else if (pixelAbove == -1 || current[pixelAbove] != 0) { //ignore air, water and lava
+				else if (pixelAbove == -1 || current[pixelAbove] != 0 && current[pixelAbove] != 8) { //ignore air, water and lava
 					next[pixel] = 1;
 				}
 				else {
