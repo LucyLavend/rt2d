@@ -370,7 +370,7 @@ void Game::updateCharacters() {
 				}
 				else {
 					//kill character when falling for too long
-					if (i.airTime > 45) {
+					if (i.airTime > 40) { //amount of blocks to fall before applying falldamage
 						std::cout << i.airTime << std::endl;
 						i.die();
 						drawCharacter(i, oldPosition);
