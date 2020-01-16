@@ -200,6 +200,7 @@ void Game::checkLevelProgress() {
 				chraractersHome++;
 			}
 		}
+		//next level if all character are home
 		if (chraractersHome >= characters.size()) {
 			if (level < totalLevelCount) {
 				level++;
