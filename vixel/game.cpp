@@ -370,10 +370,13 @@ void Game::updateCharacters() {
 				}
 				else {
 					//kill character when falling for too long
-					if (i.airTime > 50) {
+					if (i.airTime > 45) {
 						std::cout << i.airTime << std::endl;
 						i.die();
 						drawCharacter(i, oldPosition);
+					}
+					else {
+						i.airTime = 0;
 					}
 				}
 			}
