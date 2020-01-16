@@ -286,6 +286,7 @@ void Game::updateCharacters() {
 
 		if (i.awake) {
 			if (frameCount % 12 == 0) {
+				//loop through height
 				for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
 				{
 					int leftId = getIdFromPos(i.position.x - 1, i.position.y + y);
@@ -323,7 +324,8 @@ void Game::updateCharacters() {
 
 						highestCollision = y;
 					}
-				}
+				} //done checking vertically
+
 				if (highestCollision == -1) { //walking
 					i.walk();
 				}
@@ -366,7 +368,16 @@ void Game::updateCharacters() {
 				if (floorCollisions == 0) { //fall if there are no collisions below the character
 					i.applyGravity();
 				}
+				else {
+					//kill character when falling for too long
+					if (i.airTime > 50) {
+						std::cout << i.airTime << std::endl;
+						i.die();
+						drawCharacter(i, oldPosition);
+					}
+				}
 			}
+
 			if (frameCount % 6 == 0) {
 				if (amountOfWater >= i.spriteH) { //check if the character is submerged in water and remove some breath
 					i.breath--;
