@@ -7,6 +7,8 @@
 #include <time.h>
 #include "game.h"
 #include <stdlib.h>
+#include <fstream>
+#include <string>
 
 Game::Game() : SuperScene()
 {
@@ -29,7 +31,7 @@ Game::Game() : SuperScene()
 	frameCount = 0;
 
 	level = 0;
-	totalLevelCount = 4;
+	totalLevelCount = 5;
 
 	srand((unsigned)time(nullptr));
 
@@ -180,13 +182,75 @@ void Game::update(float deltaTime)
 }
 
 void Game::initLevel() {
+	//reset level
 	const int w = canvas->width();
 	const int h = canvas->height();
 	current = std::vector<int>(w * h, 0);
-	current = createMapFromImage();
-	//reset characters
+
+	disabledMaterials.clear();
+	checkDisabledMaterials();
+
+	characters.clear();
+	homes.clear();
 	for (Character &i : characters) {
 		i.init();
+	}
+	current = createMapFromImage();
+}
+
+void Game::checkDisabledMaterials() {
+	std::string line;
+	std::ifstream levelInfo("levels/levels.txt");
+
+	if (levelInfo.is_open())
+	{
+		while (std::getline(levelInfo, line))
+		{
+			bool levelIndexFound = false;
+			std::string levelIndexString = "";
+			int levelIndex = 0;
+			std::string disabledMatString = "";
+
+			for (char& c : line) {
+				//stop if : is found
+				if (c == ':') {
+					levelIndexFound = true;
+				}
+				//add character to level index
+				if (!levelIndexFound) {
+					levelIndexString += c;
+				}
+				//add characters to disabled materials list
+				else if (c != ':' && c != ' ') {
+					disabledMatString += c;
+				}
+			}
+			std::istringstream(levelIndexString) >> levelIndex;
+
+			if (levelIndex == level) {
+
+				std::string matNumber;
+				for (char& c : disabledMatString) {
+					//split the numbers
+					if (c != ',') {
+						matNumber += c;
+					}
+					else {
+						//add disabled material number to the array
+						int number = 0;
+						std::istringstream(matNumber) >> number;
+						disabledMaterials.push_back(number);
+						matNumber = "";
+					}
+				}
+			}
+		}
+		levelInfo.close();
+	}
+
+	for (int aaaa = 0; aaaa < disabledMaterials.size(); aaaa++)
+	{
+		std::cout << disabledMaterials[aaaa] << std::endl;
 	}
 }
 
@@ -212,8 +276,6 @@ void Game::checkLevelProgress() {
 
 std::vector<int> Game::createMapFromImage() {
 
-	characters.clear();
-	homes.clear();
 	const int w = canvas->width();
 	const int h = canvas->height();
 	std::vector<int> result = std::vector<int>(w * h, 0);

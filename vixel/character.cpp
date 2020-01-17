@@ -48,8 +48,10 @@ void Character::switchDirection() {
 }
 
 void Character::die() {
-	position = initPosition;
-	init();
+	if (awake) {
+		position = initPosition;
+		init();
+	}
 }
 
 

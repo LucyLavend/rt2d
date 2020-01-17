@@ -52,6 +52,7 @@ private:
 	void drawUI();
 	void updateField();
 	void initLevel();
+	void checkDisabledMaterials();
 	void checkLevelProgress();
 	void drawLevel();
 	void updateCharacters();
@@ -69,6 +70,7 @@ private:
 	Timer timer;
 
 	std::vector<RGBAColor> materials;
+	std::vector<int> disabledMaterials;
 	RGBAColor air = RGBAColor(0, 0, 0, 0);
 	RGBAColor dirt = RGBAColor(116, 63, 57, 255);
 	RGBAColor wood = RGBAColor(230, 177, 133, 255);
