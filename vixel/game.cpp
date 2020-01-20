@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 Game::Game() : SuperScene()
 {
@@ -68,11 +69,19 @@ void Game::drawUI() {
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 5, mat);
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 6, mat);
 		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 6, mat);
-		//clear selectet material underlining
-		uiCanvas->clearPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 7);
-		uiCanvas->clearPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 7);
+		
 
-		//draw background
+		if (std::find(disabledMaterials.begin(), disabledMaterials.end(), i) != disabledMaterials.end()) {
+			std::cout << i << std::endl;
+			//draw disabled material underline
+			uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 4, uiCanvas->height() - 7, RED);
+			uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 5, uiCanvas->height() - 7, RED);
+		}
+		else {
+			//clear selectet material underlining
+			uiCanvas->clearPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 4, uiCanvas->height() - 7);
+			uiCanvas->clearPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 5, uiCanvas->height() - 7);
+		}
 	}
 	//draw selected material underline
 	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
