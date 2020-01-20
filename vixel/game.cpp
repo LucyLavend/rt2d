@@ -72,7 +72,6 @@ void Game::drawUI() {
 		
 
 		if (std::find(disabledMaterials.begin(), disabledMaterials.end(), i) != disabledMaterials.end()) {
-			std::cout << i << std::endl;
 			//draw disabled material underline
 			uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 4, uiCanvas->height() - 7, RED);
 			uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 5, uiCanvas->height() - 7, RED);
