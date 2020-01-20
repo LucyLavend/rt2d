@@ -170,23 +170,37 @@ void Game::update(float deltaTime)
 	if (input()->mouseScrollY != 0) {
 		scrolledAmount += input()->mouseScrollY;
 
-		if(scrolledAmount < 0){
-			scrolledAmount = useableMaterialsCap - 1;
-		}
-		if (scrolledAmount > useableMaterialsCap - 1) {
-			scrolledAmount = 0;
-		}
-		currentMaterial = scrolledAmount;
+		moveToSelectableMat();
 	}
 	//select material on number key press
 	for (int i = 0; i <= 9; i++)
 	{
 		if (input()->getKeyDown(KeyCode(49 + i)) && i < useableMaterialsCap) { // KeyCode 49 is Alpha1
-			currentMaterial = i;
-			text[3]->message("Material: " + std::to_string(currentMaterial));
-			text[4]->message("Material color: " + std::to_string(materials[currentMaterial].r) + ", " + std::to_string(materials[currentMaterial].g) + ", " + std::to_string(materials[currentMaterial].b) + ", " + std::to_string(materials[currentMaterial].a));
+
+			if (!(std::find(disabledMaterials.begin(), disabledMaterials.end(), i) != disabledMaterials.end())) {
+				currentMaterial = i;
+			}
 		}
 	}
+}
+
+void Game::moveToSelectableMat() {
+	while ((std::find(disabledMaterials.begin(), disabledMaterials.end(), scrolledAmount) != disabledMaterials.end())) {
+		if (input()->mouseScrollY > 0) {
+			scrolledAmount++;
+		}
+		else {
+			scrolledAmount--;
+		}
+	}
+
+	if (scrolledAmount < 0) {
+		scrolledAmount = useableMaterialsCap - 1;
+	}
+	if (scrolledAmount > useableMaterialsCap - 1) {
+		scrolledAmount = 0;
+	}
+	currentMaterial = scrolledAmount;
 }
 
 void Game::initLevel() {
@@ -197,6 +211,7 @@ void Game::initLevel() {
 
 	disabledMaterials.clear();
 	checkDisabledMaterials();
+	moveToSelectableMat();
 
 	characters.clear();
 	homes.clear();

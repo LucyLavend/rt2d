@@ -52,6 +52,7 @@ private:
 	void drawUI();
 	void updateField();
 	void initLevel();
+	void moveToSelectableMat();
 	void checkDisabledMaterials();
 	void checkLevelProgress();
 	void drawLevel();
