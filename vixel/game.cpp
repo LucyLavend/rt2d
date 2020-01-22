@@ -16,7 +16,7 @@ Game::Game() : SuperScene()
 	// audio
 	Audio::init();
 	this->loadAudio();
-	//music[0]->play();
+	music[0]->play();
 
 	//add all materials
 	materials.push_back(air);//0
@@ -382,6 +382,12 @@ void Game::updateCharacters() {
 
 		if (i.awake) {
 			if (frameCount % 12 == 0) {
+
+				//fall audio
+				if (i.airTime == 6) {
+					sfx[1]->play();
+				}
+
 				//loop through height
 				for (int y = 0; y < i.spriteH; y++) //check on the side of the character if there are collisions
 				{
@@ -424,6 +430,7 @@ void Game::updateCharacters() {
 
 				if (highestCollision == -1 && i.awake) { //walking
 					i.walk();
+					i.breath = 16;
 				}
 				else if (highestCollision == 0 && i.spriteH > 1 && i.awake) { //walk up one block slope
 					i.position.y += 1;
@@ -450,6 +457,7 @@ void Game::updateCharacters() {
 								drawCharacter(i, oldPosition);
 							}
 							else if (blockToCheck == 6) {
+								i.airTime = 0;
 								amountOfWater++;
 							}
 							if (blockToCheck != 6 || belowId == -1) {
@@ -465,14 +473,16 @@ void Game::updateCharacters() {
 					i.applyGravity();
 				}
 				else {
-					//kill character when falling for too long
+					//kill character when falling for too long and hits the ground
 					if (i.airTime > 40) { //amount of blocks to fall before applying falldamage
-						std::cout << i.airTime << std::endl;
-						i.die();
+						sfx[1]->stop();
 						sfx[0]->play();
+						i.die();
 						drawCharacter(i, oldPosition);
 					}
 					else {
+						//std::cout << "hahah" << std::endl;
+						//sfx[1]->pause(); //stop falling sound
 						i.airTime = 0;
 					}
 				}
@@ -480,16 +490,24 @@ void Game::updateCharacters() {
 
 			if (frameCount % 6 == 0) {
 				if (amountOfWater >= i.spriteH) { //check if the character is submerged in water and remove some breath
+					if (i.breath == 7) { //play drowning sound
+						sfx[2]->play();
+					}
 					i.breath--;
+					if (i.breath <= 0) { //drown.
+						sfx[3]->play();
+						i.die();
+						drawCharacter(i, oldPosition);
+					}
 				}
-				if (i.breath <= 0) { //drown.
-					i.die();
-					drawCharacter(i, oldPosition);
+				else {
+					//i.breath = 16;
 				}
 			}
 		}
 		//home check
 		if (homeAmount >= i.spriteH) {
+			sfx[4]->play();
 			clearCharacter(i, oldPosition);
 			i.awake = false;
 			i.home = true;
@@ -835,8 +853,33 @@ bool Game::placePixel(int x, int y, int mat) {
 
 void Game::loadAudio()
 {
-	Sound* f = new Sound("assets/audio/blip.wav");
+	Sound* f = new Sound("assets/audio/land_die.wav");//0
 	f->loop(false);
 	f->gain(1.0f);
 	sfx.push_back(f);
+
+	Sound* a = new Sound("assets/audio/fall.wav");//1
+	a->loop(false);
+	a->gain(0.8f);
+	sfx.push_back(a);
+
+	Sound* b = new Sound("assets/audio/drowning.wav");//2
+	b->loop(false);
+	b->gain(1.3f);
+	sfx.push_back(b);
+
+	Sound* c = new Sound("assets/audio/drown.wav");//3
+	c->loop(false);
+	c->gain(1.3f);
+	sfx.push_back(c);
+
+	Sound* d = new Sound("assets/audio/enter_home.wav");//4
+	d->loop(false);
+	d->gain(1.3f);
+	sfx.push_back(d);
+
+	Sound* m = new Sound("assets/audio/music_test.wav");//0
+	m->loop(true);
+	c->gain(0.5f);
+	music.push_back(m);
 }

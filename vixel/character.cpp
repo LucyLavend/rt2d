@@ -25,7 +25,7 @@ void Character::init() {
 	awake = false;
 	direction = 1;
 
-	breath = 10;
+	breath = 16;
 	airTime = 0;
 }
 
