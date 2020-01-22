@@ -673,6 +673,10 @@ void Game::updateField() {
 					next[pixel] = 0;
 					next[pixelBelow] = 3;
 				}
+				else if ((rand() % 90000 == 1) && pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) {
+					next[pixel] = 0;
+					next[pixelBelow] = 3;
+				}
 				else {
 					next[pixel] = 3;
 				}
