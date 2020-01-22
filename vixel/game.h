@@ -16,6 +16,9 @@
 #include "character.h"
 #include "home.h"
 
+#include "audio/audio.h"
+#include "audio/sound.h"
+
 class Game: public SuperScene
 {
 public:
@@ -46,6 +49,8 @@ private:
 	std::vector<Home> homes;
 	std::vector<int> current;
 	std::vector<int> ui;
+	std::vector<Sound*> music;
+	std::vector<Sound*> sfx;
 
 	Sprite* levelImage;
 
@@ -63,6 +68,7 @@ private:
 	void drawHome(Home h, bool active);
 	bool placePixel(int x, int y, int mat);
 	std::vector<int> createMapFromImage();
+	void loadAudio();
 
 	PixelSprite defense_block;
 

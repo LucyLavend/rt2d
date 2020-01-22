@@ -5,28 +5,29 @@ project (rt2d)
 # delete CMakeCache.txt from the build directory when you edit these options
 ####################################################################
 OPTION(MAKE_START "Make RT2D start application" OFF)
-OPTION(MAKE_VIXEL "Make RT2D game Vixel" ON)
-OPTION(MAKE_DEMO "Make RT2D demo (tests) application" ON)
-OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" ON)
+OPTION(MAKE_DEMO "Make RT2D demo (tests) application" OFF)
+OPTION(MAKE_CANVAS_DEMO "Make RT2D Canvas demo (tests) application" OFF)
 OPTION(MAKE_FLOCKING "Make flocking application" OFF)
 OPTION(MAKE_BASIC3D "Make basic3D application" OFF)
-OPTION(MAKE_NOISE "Make Perlin Noise application" ON)
+OPTION(MAKE_NOISE "Make Perlin Noise application" OFF)
 OPTION(MAKE_GEOMETRIC "Make GeoMetric application" OFF)
-OPTION(MAKE_SHADY "Make custom Shader application" ON)
+OPTION(MAKE_SHADY "Make custom Shader application" OFF)
 OPTION(MAKE_WOLFENSTEIN "Make Wolfenstein3D raycasting application" OFF)
-OPTION(MAKE_COLLISION "Make Collision application" ON)
+OPTION(MAKE_COLLISION "Make Collision application" OFF)
 OPTION(MAKE_DEBUGDRAW "Make DebugDraw application" OFF)
 OPTION(MAKE_RAYCAST "Make Raycast application" OFF)
 
 OPTION(USE_RS232 "Use RS232 library" OFF)
 OPTION(MAKE_SERIAL "Make serial application" OFF)
 
-OPTION(USE_OPENAL "Use OpenAL library" OFF)
-OPTION(MAKE_AUDIOSTART "Make OpenAL/RT2D audiostart" OFF)
+OPTION(USE_OPENAL "Use OpenAL library" ON)
+OPTION(MAKE_AUDIOSTART "Make OpenAL/RT2D audiostart" ON)
 OPTION(MAKE_OPENAL_TONEGEN "Make OpenAL Tone Generator" OFF)
 
 OPTION(USE_BOX2D "Use Box2D" OFF)
 OPTION(MAKE_BOX2DSTART "Make Box2D/RT2D box2dstart" OFF)
+
+OPTION(MAKE_VIXEL "Make RT2D game Vixel" ON)
 ####################################################################
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
@@ -69,7 +70,8 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/external/glfw-3.3/include/GLFW
 	${CMAKE_SOURCE_DIR}/external/glm-0.9.9.2
 	${CMAKE_SOURCE_DIR}/external/glew-1.9.0/include
-	${CMAKE_SOURCE_DIR}/external
+  ${CMAKE_SOURCE_DIR}/external
+	${CMAKE_SOURCE_DIR}/external/openal/include
 	${CMAKE_SOURCE_DIR}/rt2d
 	${CMAKE_SOURCE_DIR}/.
 )
@@ -77,7 +79,8 @@ include_directories(
 link_directories(
 	${CMAKE_SOURCE_DIR}/external/glfw-3.3/src
 	${CMAKE_SOURCE_DIR}/external/glew-1.9.0
-	${CMAKE_SOURCE_DIR}/external
+  ${CMAKE_SOURCE_DIR}/external
+	${CMAKE_SOURCE_DIR}/external/openal/build
 	${CMAKE_SOURCE_DIR}/rt2d
 )
 
@@ -165,33 +168,6 @@ IF(MAKE_START)
 	# Copy assets to the build directory
 	file(
 		COPY start/assets
-		DESTINATION ${CMAKE_BINARY_DIR}
-	)
-ENDIF()
-
-####################################################################
-# vixel                                                            #
-####################################################################
-IF(MAKE_VIXEL)
-	add_executable(vixel
-		vixel/main.cpp
-		vixel/character.cpp
-		vixel/character.h
-		vixel/home.cpp
-		vixel/home.h
-		vixel/basicentity.cpp
-		vixel/basicentity.h
-		vixel/superscene.cpp
-		vixel/superscene.h
-		vixel/game.cpp
-		vixel/game.h
-	)
-	target_link_libraries(vixel
-		${ALL_GRAPHICS_LIBS}
-	)
-	# Copy assets to the build directory
-	file(
-		COPY vixel/levels
 		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 ENDIF()
@@ -500,7 +476,7 @@ ENDIF()
 ####################################################################
 # RT2D/OpenAL audiostart                                           #
 ####################################################################
-IF(MAKE_AUDIOSTART AND USE_OPENAL)
+IF(MAKE_AUDIOSTART)
 	add_executable(audiostart
 		projects/audiostart/main.cpp
 		projects/audiostart/myentity.cpp
@@ -579,6 +555,40 @@ IF(MAKE_BOX2DSTART AND USE_BOX2D)
 	target_link_libraries (box2dstart
 		${BOX2D_LIB}
 		${ALL_GRAPHICS_LIBS}
+	)
+ENDIF()
+
+####################################################################
+# vixel                                                            #
+####################################################################
+IF(MAKE_VIXEL)
+	add_executable(vixel
+		vixel/main.cpp
+		vixel/character.cpp
+		vixel/character.h
+		vixel/home.cpp
+		vixel/home.h
+		vixel/basicentity.cpp
+		vixel/basicentity.h
+		vixel/superscene.cpp
+		vixel/superscene.h
+		vixel/game.cpp
+		vixel/game.h
+		vixel/audio/audio.cpp
+		vixel/audio/audio.h
+		vixel/audio/sound.cpp
+		vixel/audio/sound.h
+		vixel/audio/wav.cpp
+		vixel/audio/wav.h
+	)
+	target_link_libraries(vixel
+		${ALL_GRAPHICS_LIBS}
+		${OPENAL}
+	)
+	# Copy assets to the build directory
+	file(
+		COPY vixel/assets
+		DESTINATION ${CMAKE_BINARY_DIR}
 	)
 ENDIF()
 

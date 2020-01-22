@@ -13,6 +13,12 @@
 
 Game::Game() : SuperScene()
 {
+	// audio
+	Audio::init();
+	this->loadAudio();
+	//music[0]->play();
+
+	//add all materials
 	materials.push_back(air);//0
 	materials.push_back(dirt);//1
 	materials.push_back(wood);//2
@@ -182,6 +188,11 @@ void Game::update(float deltaTime)
 			}
 		}
 	}
+
+	// MS Windows loop fix
+	if (music[0]->state() == Sound::STATE_STOPPED) {
+		music[0]->play();
+	}
 }
 
 void Game::moveToSelectableMat() {
@@ -223,7 +234,7 @@ void Game::initLevel() {
 
 void Game::checkDisabledMaterials() {
 	std::string line;
-	std::ifstream levelInfo("levels/levels.txt");
+	std::ifstream levelInfo("assets/levels/disabled_materials.txt");
 
 	if (levelInfo.is_open())
 	{
@@ -304,7 +315,7 @@ std::vector<int> Game::createMapFromImage() {
 	std::vector<int> result = std::vector<int>(w * h, 0);
 
 	levelImage = new Sprite();
-	std::string levelDir = "levels/level" + std::to_string(level) + ".tga";
+	std::string levelDir = "assets/levels/level" + std::to_string(level) + ".tga";
 	levelImage->setupSpriteTGAPixelBuffer(levelDir, 1, 0);
 
 	PixelBuffer* pixels = levelImage->texture()->pixels();
@@ -411,14 +422,14 @@ void Game::updateCharacters() {
 					}
 				} //done checking vertically
 
-				if (highestCollision == -1) { //walking
+				if (highestCollision == -1 && i.awake) { //walking
 					i.walk();
 				}
-				else if (highestCollision == 0 && i.spriteH > 1) { //walk up one block slope
+				else if (highestCollision == 0 && i.spriteH > 1 && i.awake) { //walk up one block slope
 					i.position.y += 1;
 					i.walk();
 				}
-				else if (highestCollision == 1 && i.spriteH > 2) { //walk up two block slope
+				else if (highestCollision == 1 && i.spriteH > 2 && i.awake) { //walk up two block slope
 					i.position.y += 2;
 					i.walk();
 				}
@@ -426,7 +437,7 @@ void Game::updateCharacters() {
 					i.switchDirection();
 				}
 			}
-			if (frameCount % 4 == 0) {
+			if (frameCount % 4 == 0 && i.awake) {
 				//gravity
 				for (int x = 0; x < i.spriteW; x++) //check if there's air under character
 				{
@@ -458,6 +469,7 @@ void Game::updateCharacters() {
 					if (i.airTime > 40) { //amount of blocks to fall before applying falldamage
 						std::cout << i.airTime << std::endl;
 						i.die();
+						sfx[0]->play();
 						drawCharacter(i, oldPosition);
 					}
 					else {
@@ -819,4 +831,12 @@ bool Game::placePixel(int x, int y, int mat) {
 		}
 	}
 	return true;
+}
+
+void Game::loadAudio()
+{
+	Sound* f = new Sound("assets/audio/blip.wav");
+	f->loop(false);
+	f->gain(1.0f);
+	sfx.push_back(f);
 }
