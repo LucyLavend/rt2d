@@ -673,7 +673,7 @@ void Game::updateField() {
 					next[pixel] = 0;
 					next[pixelBelow] = 3;
 				}
-				else if ((rand() % 90000 == 1) && pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) {
+				else if ((frameCount % 4 == 0 && rand() % 90000 == 1) && pixelBelow > -1 && (current[pixelBelow] == 0 || current[pixelBelow] == 6)) {
 					next[pixel] = 0;
 					next[pixelBelow] = 3;
 				}
@@ -801,6 +801,10 @@ void Game::updateField() {
 				}
 				if (!left && !right && !down) { //check if there was no movement, then keep the pixel the same place as before
 					next[pixel] = 5;
+				}
+
+				if ((rand() % 90000 == 1) && pixelBelow > -1 && (current[pixelBelow] != 0)) {
+					next[pixelBelow] = 5;
 				}
 			}
 
