@@ -38,7 +38,7 @@ Game::Game() : SuperScene()
 	frameCount = 0;
 
 	level = 0;
-	totalLevelCount = 5;
+	totalLevelCount = 6;
 
 	srand((unsigned)time(nullptr));
 
@@ -136,9 +136,36 @@ void Game::update(float deltaTime)
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
 
-	//place material
+	//place material left click
 	if (input()->getMouse(0)) {
-		this->placePixel(int(mousex), int(mousey), currentMaterial);
+
+		bool clickedOnUI = false;
+
+		for (int m = 0; m < useableMaterialsCap; m++)
+		{
+			if (!clickedOnUI) {
+				//check if the mouse is on a material ui button
+				int uiLocX = uiCanvas->width() - 2 * m - 5;
+				int uiLocY = uiCanvas->height() - 6;
+
+				if (mousex == uiLocX || mousex == uiLocX + 1) {
+					if (mousey == uiLocY || mousey == uiLocY + 1) {
+						//set material (if not disabled in level)
+						if (!(std::find(disabledMaterials.begin(), disabledMaterials.end(), useableMaterialsCap - m - 1) != disabledMaterials.end())) {
+							currentMaterial = useableMaterialsCap - m - 1;
+						}
+						clickedOnUI = true;
+					}
+				}
+			}
+		}
+		if (!clickedOnUI) {
+			this->placePixel(int(mousex), int(mousey), currentMaterial);
+		}
+	}
+	//place material
+	if (input()->getMouse(1)) {
+		this->placePixel(mousex, mousey, 0);
 	}
 	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
