@@ -87,19 +87,6 @@ void SuperScene::update(float deltaTime)
 	for (unsigned int i = 0; i < s; i++) {
 		text[i]->position = Point2(cam_pos.x + 50 - SWIDTH/2, cam_pos.y + 50 + (30*i) - SHEIGHT/2);
 	}
-
-	// ###############################################################
-	// show FPS
-	// ###############################################################
-	static int framecounter = 0;
-	if (fpstimer.seconds() > 1.0f) {
-		std::stringstream fpstxt;
-		fpstxt <<  "FPS: " << framecounter;
-		text[1]->message(fpstxt.str());
-		framecounter = 0;
-		fpstimer.start();
-	}
-	framecounter++;
 }
 
 void SuperScene::moveCamera(float deltaTime)

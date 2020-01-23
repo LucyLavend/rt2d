@@ -42,9 +42,6 @@ Game::Game() : SuperScene()
 
 	srand((unsigned)time(nullptr));
 
-	text[0]->message("Game");
-	text[3]->message("Material number: " + std::to_string(currentMaterial));
-
 	timer.start();
 
 	// create Canvas
@@ -109,12 +106,6 @@ void Game::update(float deltaTime)
 	// Make SuperScene do what it needs to do (Escape key stops Scene)
 	SuperScene::update(deltaTime);
 
-	std::stringstream titletxt;
-	titletxt << "Vixel";
-	text[0]->message(titletxt.str());
-
-	text[10]->message(""); // clear player click count message
-
 	// Update and draw only when it's time
 	float tsec = timer.seconds();
 	if (tsec > 0.01 - deltaTime) { // Game update time
@@ -134,7 +125,7 @@ void Game::update(float deltaTime)
 
 	int mousex = floor(input()->getMouseX() / pixelsize);
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
-	text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
+	//text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
 
 	//place material left click
 	if (input()->getMouse(0)) {
