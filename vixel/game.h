@@ -44,6 +44,7 @@ private:
 	int scrolledAmount;
 	int level;
 	int totalLevelCount;
+	bool hasClicked;
 	size_t pixelsize;
 	std::vector<Character> characters;
 	std::vector<Home> homes;
@@ -90,6 +91,7 @@ private:
 	RGBAColor grass = RGBAColor(62, 137, 72, 255);
 	RGBAColor homeInactive = RGBAColor(102, 11, 111, 255);
 	RGBAColor homeActive = RGBAColor(210, 66, 210, 255);
+	RGBAColor darkStone = RGBAColor(84, 84, 84, 255);
 	
 };
 

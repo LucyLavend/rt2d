@@ -31,11 +31,13 @@ Game::Game() : SuperScene()
 	materials.push_back(grass);//9
 	materials.push_back(homeInactive);//10
 	materials.push_back(homeActive);//11
+	materials.push_back(darkStone);//12
 
 	currentMaterial = 1;
 	useableMaterialsCap = 8;
 	scrolledAmount = 0;
 	frameCount = 0;
+	hasClicked = false;
 
 	level = 0;
 	totalLevelCount = 6;
@@ -127,14 +129,13 @@ void Game::update(float deltaTime)
 	int mousey = floor(canvas->height() - input()->getMouseY() / pixelsize);
 	//text[2]->message("Pos: " + std::to_string(mousex) + ", " + std::to_string(mousey)); //display mouse position
 
+	bool clickedOnUI = false;
 	//place material left click
 	if (input()->getMouse(0)) {
 
-		bool clickedOnUI = false;
-
 		for (int m = 0; m < useableMaterialsCap; m++)
 		{
-			if (!clickedOnUI) {
+			if (!hasClicked) {
 				//check if the mouse is on a material ui button
 				int uiLocX = uiCanvas->width() - 2 * m - 5;
 				int uiLocY = uiCanvas->height() - 6;
@@ -150,9 +151,15 @@ void Game::update(float deltaTime)
 				}
 			}
 		}
-		if (!clickedOnUI) {
+		if (!clickedOnUI) { //draw
 			this->placePixel(int(mousex), int(mousey), currentMaterial);
 		}
+		hasClicked = true;
+	}
+	//reset hasClicked
+	if (input()->getMouseUp(0)) {
+		clickedOnUI = false;
+		hasClicked = false;
 	}
 	//place material
 	if (input()->getMouse(1)) {
@@ -399,7 +406,7 @@ void Game::updateCharacters() {
 		int homeAmount = 0;
 
 		if (i.awake) {
-			if (frameCount % 12 == 0) {
+			if (frameCount % 10 == 0) {
 
 				//fall audio
 				if (i.airTime == 6) {
