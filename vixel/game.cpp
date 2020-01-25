@@ -134,6 +134,15 @@ void Game::update(float deltaTime)
 	//place material left click
 	if (input()->getMouse(0)) {
 
+		//check if the player clicks on the main menu start button
+		if (level == 0 && !hasClicked) {
+			if (mousex >= 48 && mousex <= 98 && mousey >= 19 && mousey <= 34) {
+				level++;
+				initLevel();
+			}
+		}
+
+		//check if the player clicks on material ui
 		for (int m = 0; m < useableMaterialsCap; m++)
 		{
 			if (!hasClicked) {
@@ -845,19 +854,19 @@ void Game::updateField() {
 
 			//acid logic
 			else if (frameCount % 4 == 0 && current[pixel] == 7) {
-				if (pixelAbove > -1 && current[pixelAbove] != 0 && current[pixelAbove] != 7) { //ignore air and self
+				if (pixelAbove > -1 && current[pixelAbove] != 0 && current[pixelAbove] != 7 && current[pixelAbove] != 13) { //ignore air, self and indestructable material
 					next[pixel] = 0;
 					next[pixelAbove] = 7;
 				}
-				if (pixelBelow > -1 && current[pixelBelow] != 0 && current[pixelBelow] != 7) {
+				if (pixelBelow > -1 && current[pixelBelow] != 0 && current[pixelBelow] != 7 && current[pixelBelow] != 13) {
 					next[pixel] = 0;
 					next[pixelBelow] = 7;
 				}
-				if (pixelLeft > -1 && current[pixelLeft] != 0 && current[pixelLeft] != 7) {
+				if (pixelLeft > -1 && current[pixelLeft] != 0 && current[pixelLeft] != 7 && current[pixelLeft] != 13) {
 					next[pixel] = 0;
 					next[pixelLeft] = 7;
 				}
-				if (pixelRight > -1 && current[pixelRight] != 0 && current[pixelRight] != 7) {
+				if (pixelRight > -1 && current[pixelRight] != 0 && current[pixelRight] != 7 && current[pixelRight] != 13) {
 					next[pixel] = 0;
 					next[pixelRight] = 7;
 				}
