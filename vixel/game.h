@@ -67,7 +67,7 @@ private:
 	void drawCharacter(Character c, Pointi op);
 	void updateHomes();
 	void drawHome(Home h, bool active);
-	bool placePixel(int x, int y, int mat, int size);
+	bool placePixel(int x, int y, int mat, int size = 1);
 	std::vector<int> createMapFromImage();
 	void loadAudio();
 

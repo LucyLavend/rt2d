@@ -69,12 +69,17 @@ Game::~Game()
 void Game::drawUI() {
 	for (int i = 0; i < useableMaterialsCap; i++)
 	{
-		//reverse order for a nicer look
+		//Place ui material color 4 x 4 block
 		RGBAColor mat = materials[useableMaterialsCap - 1 - i];
-		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 5, mat);
-		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 5, mat);
-		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 4, uiCanvas->height() - 6, mat);
-		uiCanvas->setPixel(uiCanvas->width() - 2 * i - 5, uiCanvas->height() - 6, mat);
+		if (i == useableMaterialsCap - 1) {
+			mat = RGBAColor(0, 0, 0, 255);
+		}
+		int posx = uiCanvas->width() - 2 * i - 5;
+		int posy = uiCanvas->height() - 6;
+		uiCanvas->setPixel(posx, posy, mat);
+		uiCanvas->setPixel(posx + 1, posy, mat);
+		uiCanvas->setPixel(posx, posy + 1, mat);
+		uiCanvas->setPixel(posx + 1, posy + 1, mat);
 		
 
 		if (std::find(disabledMaterials.begin(), disabledMaterials.end(), i) != disabledMaterials.end()) {
@@ -265,6 +270,16 @@ void Game::initLevel() {
 		i.init();
 	}
 	current = createMapFromImage();
+
+	for (int i = 0; i < useableMaterialsCap; i++)
+	{
+		int posx = uiCanvas->width() - 2 * i - 5;
+		int posy = uiCanvas->height() - 6;
+		placePixel(posx, posy, 13, 1);
+		placePixel(posx + 1, posy, 13, 1);
+		placePixel(posx, posy + 1, 13, 1);
+		placePixel(posx + 1, posy + 1, 13, 1);
+	}
 }
 
 void Game::checkDisabledMaterials() {
@@ -883,7 +898,7 @@ void Game::updateField() {
 	current = next;
 }
 
-bool Game::placePixel(int x, int y, int mat, int size = 1) {
+bool Game::placePixel(int x, int y, int mat, int size) {
 	int pos = getIdFromPos(x, y);
 	if (pos != -1 && current[pos] != 13) {
 		current[pos] = mat;
