@@ -264,6 +264,11 @@ void Game::initLevel() {
 	checkDisabledMaterials();
 	moveToSelectableMat();
 
+	//clear home state ui
+	for (int x = 0; x < characters.size(); x++) {
+		uiCanvas->clearPixel(uiCanvas->width() - x * 2 - 4, uiCanvas->height() - 3);
+	}
+
 	characters.clear();
 	homes.clear();
 	for (Character &i : characters) {
