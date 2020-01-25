@@ -38,9 +38,9 @@ Game::Game() : SuperScene()
 	scrolledAmount = 0;
 	frameCount = 0;
 	hasClicked = false;
+	onLastLevel = false;
 
 	level = 0;
-	totalLevelCount = 6;
 
 	srand((unsigned)time(nullptr));
 
@@ -176,14 +176,14 @@ void Game::update(float deltaTime)
 		}
 	}
 	//increase or decrease level
-	if (input()->getKeyDown(KeyCode(91))) { //left bracket
+	if (input()->getKeyDown(KeyCode(91))) { //left bracket [
 		if (level > 0) {
 			level--;
 			initLevel();
 		}
 	}
-	else if (input()->getKeyDown(KeyCode(93))) { //right bracket
-		if (level < totalLevelCount) {
+	else if (input()->getKeyDown(KeyCode(93))) { //right bracket ]
+		if (!onLastLevel) {
 			level++;
 			initLevel();
 		}
@@ -325,11 +325,9 @@ void Game::checkLevelProgress() {
 		}
 		//next level if all character are home
 		if (chraractersHome >= characters.size()) {
-			if (level < totalLevelCount) {
-				level++;
-				initLevel();
-			}
-		}
+			level++;
+			initLevel();
+	}
 	}
 }
 
@@ -342,8 +340,19 @@ std::vector<int> Game::createMapFromImage() {
 	levelImage = new Sprite();
 	std::string levelDir = "assets/levels/level" + std::to_string(level) + ".tga";
 	levelImage->setupSpriteTGAPixelBuffer(levelDir, 1, 0);
-
 	PixelBuffer* pixels = levelImage->texture()->pixels();
+
+	//prevent out of bounds error by loading specific level
+	if (pixels== NULL) {
+		levelDir = "assets/levels/ooblevel.tga";
+		levelImage->setupSpriteTGAPixelBuffer(levelDir, 1, 0);
+		pixels = levelImage->texture()->pixels();
+		onLastLevel = true;
+	}
+	else {
+		onLastLevel = false;
+	}
+
 	int counter = 0;
 	for (int y = 0; y < canvas->height(); y++) {
 		for (int x = 0; x < canvas->width(); x++) {

@@ -43,7 +43,7 @@ private:
 	int useableMaterialsCap;
 	int scrolledAmount;
 	int level;
-	int totalLevelCount;
+	bool onLastLevel;
 	bool hasClicked;
 	size_t pixelsize;
 	std::vector<Character> characters;
