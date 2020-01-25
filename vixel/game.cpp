@@ -32,6 +32,7 @@ Game::Game() : SuperScene()
 	materials.push_back(homeInactive);//10
 	materials.push_back(homeActive);//11
 	materials.push_back(darkStone);//12
+	materials.push_back(indistructable);//13
 
 	currentMaterial = 1;
 	useableMaterialsCap = 8;
@@ -152,7 +153,7 @@ void Game::update(float deltaTime)
 			}
 		}
 		if (!clickedOnUI) { //draw
-			this->placePixel(int(mousex), int(mousey), currentMaterial);
+			this->placePixel(int(mousex), int(mousey), currentMaterial, 2);
 		}
 		hasClicked = true;
 	}
@@ -163,7 +164,7 @@ void Game::update(float deltaTime)
 	}
 	//place material
 	if (input()->getMouse(1)) {
-		this->placePixel(mousex, mousey, 0);
+		this->placePixel(mousex, mousey, 0, 2);
 	}
 	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
@@ -873,21 +874,16 @@ void Game::updateField() {
 	current = next;
 }
 
-bool Game::placePixel(int x, int y, int mat) {
-	if (getIdFromPos(x, y) != -1) {
-		current[getIdFromPos(x, y)] = mat;
-
-		if(getIdFromPos(x - 1, y) != -1){
-			current[getIdFromPos(x -1, y)] = mat;
-		}
-		if (getIdFromPos(x + 1, y) != -1) {
-			current[getIdFromPos(x + 1, y)] = mat;
-		}
-		if (getIdFromPos(x, y - 1) != -1) {
-			current[getIdFromPos(x, y - 1)] = mat;
-		}
-		if (getIdFromPos(x, y + 1) != -1) {
-			current[getIdFromPos(x, y + 1)] = mat;
+bool Game::placePixel(int x, int y, int mat, int size = 1) {
+	int pos = getIdFromPos(x, y);
+	if (pos != -1 && current[pos] != 13) {
+		current[pos] = mat;
+		
+		if (size > 1) {
+			placePixel(x - 1, y, mat);
+			placePixel(x + 1, y, mat);
+			placePixel(x, y - 1, mat);
+			placePixel(x, y + 1, mat);
 		}
 	}
 	return true;

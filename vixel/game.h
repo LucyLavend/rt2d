@@ -67,7 +67,7 @@ private:
 	void drawCharacter(Character c, Pointi op);
 	void updateHomes();
 	void drawHome(Home h, bool active);
-	bool placePixel(int x, int y, int mat);
+	bool placePixel(int x, int y, int mat, int size);
 	std::vector<int> createMapFromImage();
 	void loadAudio();
 
@@ -92,6 +92,7 @@ private:
 	RGBAColor homeInactive = RGBAColor(102, 11, 111, 255);
 	RGBAColor homeActive = RGBAColor(210, 66, 210, 255);
 	RGBAColor darkStone = RGBAColor(84, 84, 84, 255);
+	RGBAColor indistructable = RGBAColor(60, 60, 135, 255);
 	
 };
 
