@@ -176,9 +176,9 @@ void Game::update(float deltaTime)
 		clickedOnUI = false;
 		hasClicked = false;
 	}
-	//place material
-	if (input()->getMouse(1)) {
-		this->placePixel(mousex, mousey, 0, 2);
+	//place air
+	if (input()->getMouse(1)) { //right mouse button
+		this->placePixel(mousex, mousey, 0, 1);
 	}
 	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
