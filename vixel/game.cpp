@@ -923,7 +923,7 @@ void Game::updateField() {
 	current = next;
 }
 
-bool Game::placePixel(int x, int y, int mat, int size) {
+void Game::placePixel(int x, int y, int mat, int size) {
 	
 	int pos = getIdFromPos(x, y);
 	if (pos != -1 && current[pos] != 13) {
@@ -936,7 +936,6 @@ bool Game::placePixel(int x, int y, int mat, int size) {
 			placePixel(x, y + 1, mat);
 		}
 	}
-	return true;
 }
 
 void Game::loadAudio()
