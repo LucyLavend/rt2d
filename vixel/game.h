@@ -45,6 +45,7 @@ private:
 	int level;
 	bool onLastLevel;
 	bool hasClicked;
+	bool allMaterialsDisabled;
 	size_t pixelsize;
 	std::vector<Character> characters;
 	std::vector<Home> homes;

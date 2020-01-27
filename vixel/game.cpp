@@ -40,6 +40,7 @@ Game::Game() : SuperScene()
 	frameCount = 0;
 	hasClicked = false;
 	onLastLevel = false;
+	allMaterialsDisabled = false;
 
 	level = 0;
 
@@ -93,10 +94,11 @@ void Game::drawUI() {
 			uiCanvas->clearPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - i) - 5, uiCanvas->height() - 7);
 		}
 	}
-	//draw selected material underline
-	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
-	uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
-
+	if (!allMaterialsDisabled) {
+		//draw selected material underline
+		uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 4, uiCanvas->height() - 7, WHITE);
+		uiCanvas->setPixel(uiCanvas->width() - 2 * (useableMaterialsCap - 1 - currentMaterial) - 5, uiCanvas->height() - 7, WHITE);
+	}
 	//draw home state of all characters
 	for (int x = 0; x < characters.size(); x++) {
 
@@ -166,7 +168,7 @@ void Game::update(float deltaTime)
 				}
 			}
 		}
-		if (!clickedOnUI) { //draw
+		if (!clickedOnUI && !allMaterialsDisabled) { //draw
 			this->placePixel(int(mousex), int(mousey), currentMaterial, 2);
 		}
 		hasClicked = true;
@@ -205,10 +207,12 @@ void Game::update(float deltaTime)
 	}
 	//fill key
 	if (input()->getKeyDown(KeyCode('M'))) {
-		for (int i = 0; i < current.size(); i++)
-		{
-			if (current[i] == 0) {
-				current[i] = currentMaterial;
+		if (!allMaterialsDisabled) {
+			for (int i = 0; i < current.size(); i++)
+			{
+				if (current[i] == 0) {
+					current[i] = currentMaterial;
+				}
 			}
 		}
 	}
@@ -236,12 +240,20 @@ void Game::update(float deltaTime)
 }
 
 void Game::moveToSelectableMat() {
-	while ((std::find(disabledMaterials.begin(), disabledMaterials.end(), scrolledAmount) != disabledMaterials.end())) {
+	int unavailableAmount = 0;
+	while (unavailableAmount <= useableMaterialsCap - 1 && (std::find(disabledMaterials.begin(), disabledMaterials.end(), scrolledAmount) != disabledMaterials.end())) {
+		unavailableAmount++;
 		if (input()->mouseScrollY > 0) {
 			scrolledAmount++;
 		}
 		else {
 			scrolledAmount--;
+		}
+		if (scrolledAmount < 0) {
+			scrolledAmount = useableMaterialsCap - 1;
+		}
+		if (scrolledAmount > useableMaterialsCap - 1) {
+			scrolledAmount = 0;
 		}
 	}
 
@@ -251,6 +263,7 @@ void Game::moveToSelectableMat() {
 	if (scrolledAmount > useableMaterialsCap - 1) {
 		scrolledAmount = 0;
 	}
+	
 	currentMaterial = scrolledAmount;
 }
 
@@ -288,6 +301,7 @@ void Game::initLevel() {
 }
 
 void Game::checkDisabledMaterials() {
+	disabledMaterials.clear();
 	std::string line;
 	std::ifstream levelInfo("assets/levels/disabled_materials.txt");
 
@@ -337,10 +351,16 @@ void Game::checkDisabledMaterials() {
 		levelInfo.close();
 	}
 
-	for (int aaaa = 0; aaaa < disabledMaterials.size(); aaaa++)
+	allMaterialsDisabled = false;
+	for (int b = 0; b < disabledMaterials.size(); b++)
 	{
-		std::cout << disabledMaterials[aaaa] << std::endl;
+		std::cout << disabledMaterials[b] << ", ";
+
+		if (b > useableMaterialsCap - 1) {
+			allMaterialsDisabled = true;
+		}
 	}
+	std::cout << std::endl;
 }
 
 void Game::checkLevelProgress() {
@@ -904,6 +924,7 @@ void Game::updateField() {
 }
 
 bool Game::placePixel(int x, int y, int mat, int size) {
+	
 	int pos = getIdFromPos(x, y);
 	if (pos != -1 && current[pos] != 13) {
 		current[pos] = mat;
