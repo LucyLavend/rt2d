@@ -180,7 +180,7 @@ void Game::update(float deltaTime)
 	}
 	//place air
 	if (input()->getMouse(1)) { //right mouse button
-		this->placePixel(mousex, mousey, 2, 1);
+		this->placePixel(mousex, mousey, 0, 1);
 	}
 	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
