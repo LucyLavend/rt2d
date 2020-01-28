@@ -180,7 +180,7 @@ void Game::update(float deltaTime)
 	}
 	//place air
 	if (input()->getMouse(1)) { //right mouse button
-		this->placePixel(mousex, mousey, 0, 1);
+		this->placePixel(mousex, mousey, 2, 1);
 	}
 	//reset key
 	if (input()->getKeyDown(KeyCode('R'))) {
@@ -635,8 +635,8 @@ void Game::updateHomes() {
 		//loop through top and bottom row to find wood
 		for (int x = 0; x < h.spriteW; x++)
 		{
-			int blockAbove = getIdFromPos(h.position.x + x, h.position.y - 1);
-			int blockBelow = getIdFromPos(h.position.x + x, h.position.y + h.spriteH + 1);
+			int blockAbove = getIdFromPos(h.position.x + x, h.position.y + h.spriteH);
+			int blockBelow = getIdFromPos(h.position.x + x, h.position.y - 1);
 
 			if (blockAbove != -1 && current[blockAbove] == 2) {
 				woodAmount++;
@@ -649,7 +649,7 @@ void Game::updateHomes() {
 		for (int y = 0; y < h.spriteH; y++)
 		{
 			int blockLeft = getIdFromPos(h.position.x - 1, h.position.y + y);
-			int blockRight = getIdFromPos(h.position.x + h.spriteW + 1, h.position.y + y);
+			int blockRight = getIdFromPos(h.position.x + h.spriteW, h.position.y + y);
 
 			if (blockLeft != -1 && current[blockLeft] == 2) {
 				woodAmount++;
