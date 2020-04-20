@@ -167,7 +167,7 @@ public:
 	/// @param[in] w GLFWwindow*
 	void updateInput(GLFWwindow* w);
 
-	// keys while down
+	// keys/buttons while down
 	/// @brief Is this key pressed?
 	/// @param keyCode as KeyCode
 	/// @return bool key is pressed or not
@@ -185,6 +185,10 @@ public:
 	/// @param button num
 	/// @return bool button is pressed or not
 	bool getMouse(unsigned int button) { return _mouse[button]; }
+	/// @brief Is this joystick button pressed?
+	/// @param button num
+	/// @return bool button is pressed or not
+	bool getJoyButton(unsigned int button) { return _joyButtons[button]; }
 
 	// down
 	/// @brief Is this key pressed? Only check first press down
@@ -204,6 +208,10 @@ public:
 	/// @param button num
 	/// @return bool button is pressed or not
 	bool getMouseDown(unsigned int button) { return _mouseDown[button]; }
+	/// @brief Is this joystick button pressed? Only check first press down
+	/// @param button num
+	/// @return bool button is pressed or not
+	bool getJoyButtonDown(unsigned int button) { return _joyButtonsDown[button]; }
 
 	// up
 	/// @brief Is this key released?
@@ -223,6 +231,10 @@ public:
 	/// @param button num
 	/// @return bool button is released or not
 	bool getMouseUp(unsigned int button) { return _mouseUp[button]; }
+	/// @brief Is this joystick button released?
+	/// @param button num
+	/// @return bool button is pressed or not
+	bool getJoyButtonUp(unsigned int button) { return _joyButtonsUp[button]; }
 
 	// mouse
 	/// @brief get X position of the Mouse
@@ -239,6 +251,9 @@ public:
 	double mouseScrollX = 0;
 	double mouseScrollY = 0;
 
+	// joystick/gamepad
+	const unsigned char *joyButtons = NULL;
+
 	// window size
 	/// @brief get width of the window
 	/// @return _windowWidth as int
@@ -251,14 +266,22 @@ private:
 	GLFWwindow* _window; ///< @brief GLFWwindow* _window
 	void _handleKey(unsigned int key); ///< @brief update internal array of keys
 	void _handleMouse(unsigned int key); ///< @brief update internal array of keys
+	void _handleJoyButton(unsigned int button); ///< @brief update internal array of joystick/gamepad buttons
+
+	void _findJoystickButtons();
 
 	bool _keys[GLFW_KEY_LAST]; ///< @brief internal array of pressed keys
 	bool _keysUp[GLFW_KEY_LAST]; ///< @brief internal array of released keys
 	bool _keysDown[GLFW_KEY_LAST]; ///< @brief internal array of keys pressed the first time
 
+
 	bool _mouse[GLFW_MOUSE_BUTTON_LAST]; ///< @brief internal array of pressed mouse buttons
 	bool _mouseUp[GLFW_MOUSE_BUTTON_LAST]; ///< @brief internal array of released mouse buttons
 	bool _mouseDown[GLFW_MOUSE_BUTTON_LAST]; ///< @brief internal array of mouse buttons pressed the first time
+
+	bool _joyButtons[40]; ///< @brief internal array of pressed joystick/gamepad buttons
+	bool _joyButtonsUp[40]; ///< @brief internal array of released joystick/gamepad buttons
+	bool _joyButtonsDown[40]; ///< @brief internal array of joystick/gamepad buttons pressed for the first time
 
 	double _mouseX; ///< @brief X position of the Mouse
 	double _mouseY; ///< @brief Y position of the Mouse

@@ -17,6 +17,7 @@ Input::Input()
 	_windowWidth = 0;
 	_windowHeight = 0;
 
+	_findJoystickButtons();
 
 	for(unsigned int i=0; i<GLFW_KEY_LAST; i++) {
 		_keys[i] = false;
@@ -27,6 +28,12 @@ Input::Input()
 		_mouse[i] = false;
 		_mouseUp[i] = false;
 		_mouseDown[i] = false;
+	}
+
+	for (unsigned int i = 0; i < 40; i++) {
+		_joyButtons[i] = false;
+		_joyButtonsUp[i] = false;
+		_joyButtonsDown[i] = false;
 	}
 }
 
@@ -46,6 +53,9 @@ void joystickCallback(int joyID, int event)
 	if (event == GLFW_CONNECTED)
 	{
 		std::cout << "Joystick " << glfwGetJoystickName(joyID) << " (" << joyID << ") " << " has been connected." << std::endl;
+
+		int buttonCount;
+		Singleton<Input>::instance()->joyButtons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 	}
 	else if (event == GLFW_DISCONNECTED)
 	{
@@ -86,7 +96,11 @@ void Input::updateInput(GLFWwindow* w)
 		_handleMouse(i);
 	}
 
-	// gamepad
+	// gamepad buttons
+	for (unsigned int i = 0; i < 40; i++) {
+		_handleJoyButton(i);
+	}
+
 	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
 	//std::cout << "Joystick 1 status: " << present << std::endl;
 
@@ -104,6 +118,11 @@ void Input::updateInput(GLFWwindow* w)
 		const char *name = glfwGetJoystickName(GLFW_JOYSTICK_1);
 		//std::cout << name << std::endl;
 	}
+}
+
+void Input::_findJoystickButtons() {
+	int buttonCount;
+	joyButtons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 }
 
 void Input::_handleMouse(unsigned int button)
@@ -152,6 +171,35 @@ void Input::_handleKey(unsigned int key)
 			//std::cout << "UP: " << key << std::endl;
 		} else {
 			_keysUp[key] = false;
+		}
+	}
+}
+
+void Input::_handleJoyButton(unsigned int button)
+{
+	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	if (present == 1) {
+		if (joyButtons[button] == GLFW_PRESS) {
+			if (_joyButtons[button] == false) { // if first time pressed down
+				_joyButtons[button] = true;
+				_joyButtons[button] = true;
+				std::cout << "DOWN: " << button << std::endl;
+			}
+			else {
+				// not the first time this is pressed
+				// keys[key] is still true;
+				_joyButtonsDown[button] = false;
+			}
+		}
+		if (joyButtons[button] == GLFW_RELEASE) {
+			if (_joyButtons[button] == true) { // still pressed
+				_joyButtons[button] = false;
+				_joyButtonsUp[button] = true;
+				std::cout << "UP: " << button << std::endl;
+			}
+			else {
+				_joyButtonsUp[button] = false;
+			}
 		}
 	}
 }
