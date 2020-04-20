@@ -252,7 +252,13 @@ public:
 	double mouseScrollY = 0;
 
 	// joystick/gamepad
-	const unsigned char *joyButtons = NULL;
+	const unsigned char *joyButtons;
+	const float *joyAxes;
+
+	/// @brief Set up a joystick/gamepad
+	/// @param joystick number
+	/// @return void
+	void setupJoystick(int joyNumber);
 
 	// window size
 	/// @brief get width of the window
@@ -268,7 +274,6 @@ private:
 	void _handleMouse(unsigned int key); ///< @brief update internal array of keys
 	void _handleJoyButton(unsigned int button); ///< @brief update internal array of joystick/gamepad buttons
 
-	void _findJoystickButtons();
 
 	bool _keys[GLFW_KEY_LAST]; ///< @brief internal array of pressed keys
 	bool _keysUp[GLFW_KEY_LAST]; ///< @brief internal array of released keys

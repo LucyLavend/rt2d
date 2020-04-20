@@ -17,7 +17,9 @@ Input::Input()
 	_windowWidth = 0;
 	_windowHeight = 0;
 
-	_findJoystickButtons();
+	for (unsigned int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
+		setupJoystick(i);
+	}
 
 	for(unsigned int i=0; i<GLFW_KEY_LAST; i++) {
 		_keys[i] = false;
@@ -30,6 +32,7 @@ Input::Input()
 		_mouseDown[i] = false;
 	}
 
+	// joystick buttons
 	for (unsigned int i = 0; i < 40; i++) {
 		_joyButtons[i] = false;
 		_joyButtonsUp[i] = false;
@@ -52,10 +55,8 @@ void joystickCallback(int joyID, int event)
 {
 	if (event == GLFW_CONNECTED)
 	{
-		std::cout << "Joystick " << glfwGetJoystickName(joyID) << " (" << joyID << ") " << " has been connected." << std::endl;
-
-		int buttonCount;
-		Singleton<Input>::instance()->joyButtons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+		std::cout << "Joystick/gamepad connected" << std::endl;
+		Singleton<Input>::instance()->setupJoystick(joyID);
 	}
 	else if (event == GLFW_DISCONNECTED)
 	{
@@ -100,23 +101,22 @@ void Input::updateInput(GLFWwindow* w)
 	for (unsigned int i = 0; i < 40; i++) {
 		_handleJoyButton(i);
 	}
-
-	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-	//std::cout << "Joystick 1 status: " << present << std::endl;
-
-	if (present == 1) {
-		int axesCount;
-		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
-		//std::cout << "Number of axes: " << axesCount << std::endl;
-
-		const char *name = glfwGetJoystickName(GLFW_JOYSTICK_1);
-		//std::cout << name << std::endl;
-	}
 }
 
-void Input::_findJoystickButtons() {
-	int buttonCount;
-	joyButtons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+void Input::setupJoystick(int joyNumber) {
+
+	if (glfwJoystickPresent(joyNumber)) {
+
+		std::cout << "Name: " << glfwGetJoystickName(joyNumber) << std::endl;
+
+		int buttonCount;
+		joyButtons = glfwGetJoystickButtons(joyNumber, &buttonCount);
+		std::cout << "Amount of buttons: " << buttonCount << std::endl;
+
+		int axesCount;
+		joyAxes = glfwGetJoystickAxes(joyNumber, &axesCount);
+		std::cout << "Amount of axes: " << axesCount << std::endl;
+	}
 }
 
 void Input::_handleMouse(unsigned int button)
@@ -181,7 +181,7 @@ void Input::_handleJoyButton(unsigned int button)
 			}
 			else {
 				// not the first time this is pressed
-				// keys[key] is still true;
+				// button[button] is still true;
 				_joyButtonsDown[button] = false;
 			}
 		}
