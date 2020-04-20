@@ -23,13 +23,11 @@ Input::Input()
 		_keysUp[i] = false;
 		_keysDown[i] = false;
 	}
-	for(unsigned int i=0; i<GLFW_MOUSE_BUTTON_LAST; i++) {
+	for (unsigned int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++) {
 		_mouse[i] = false;
 		_mouseUp[i] = false;
 		_mouseDown[i] = false;
 	}
-
-
 }
 
 Input::~Input()
@@ -37,10 +35,22 @@ Input::~Input()
 	std::cout << "Input destructor" << std::endl;
 }
 
-void handleMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	Singleton<Input>::instance()->mouseScrollX = xoffset;
 	Singleton<Input>::instance()->mouseScrollY = yoffset;
+}
+
+void joystickCallback(int jid, int event)
+{
+	if (event == GLFW_CONNECTED)
+	{
+		std::cout << "Joystick " << glfwGetJoystickName(jid) << " (" << jid << ") " << " has been connected." << std::endl;
+	}
+	else if (event == GLFW_DISCONNECTED)
+	{
+		std::cout << "Joystick " << jid << " has been disconnected." << std::endl;
+	}
 }
 
 void Input::updateInput(GLFWwindow* w)
@@ -50,7 +60,8 @@ void Input::updateInput(GLFWwindow* w)
 
 	_window = w;
 	
-	glfwSetScrollCallback(_window, handleMouseScroll);
+	glfwSetScrollCallback(_window, scrollCallback);
+	glfwSetJoystickCallback(joystickCallback);
 	glfwPollEvents();
 
 	// 32-97 = ' ' to '`'
@@ -73,6 +84,25 @@ void Input::updateInput(GLFWwindow* w)
 	// mouse buttons
 	for(unsigned int i=0; i<GLFW_MOUSE_BUTTON_LAST; i++) {
 		_handleMouse(i);
+	}
+
+	// gamepad
+	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	//std::cout << "Joystick 1 status: " << present << std::endl;
+
+	if (present == 1) {
+		int axesCount;
+		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
+		//std::cout << "Number of axes: " << axesCount << std::endl;
+
+		int buttonCount;
+		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+		if (GLFW_PRESS == buttons[1]) {
+			std::cout << "X button pressed" << std::endl;
+		}
+
+		const char *name = glfwGetJoystickName(GLFW_JOYSTICK_1);
+		//std::cout << name << std::endl;
 	}
 }
 

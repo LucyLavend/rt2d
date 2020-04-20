@@ -238,18 +238,6 @@ public:
 	void setMouse(double x, double y) { glfwSetCursorPos(_window, x, y); };
 	double mouseScrollX = 0;
 	double mouseScrollY = 0;
-	///// @brief get the amount scrolled since the last frame on the X axis
-	///// @return _mouseScrollX as double
-	//double getMouseScrollX() { return _mouseScrollX; }
-	///// @brief get the amount scrolled since the last frame on the Y axis
-	///// @return _mouseScrollY as double
-	//double getMouseScrollY() { return _mouseScrollY; }
-	///// @brief set the amount scrolled since the last frame on the X axis
-	///// @return _mouseScrollX as double
-	//double setMouseScrollX(double amount) { _mouseScrollX = amount; }
-	///// @brief set the amount scrolled since the last frame on the Y axis
-	///// @return _mouseScrollY as double
-	//double setMouseScrollY(double amount) { return _mouseScrollY = amount;}
 
 	// window size
 	/// @brief get width of the window
@@ -263,7 +251,6 @@ private:
 	GLFWwindow* _window; ///< @brief GLFWwindow* _window
 	void _handleKey(unsigned int key); ///< @brief update internal array of keys
 	void _handleMouse(unsigned int key); ///< @brief update internal array of keys
-	//void _handleMouseScroll(GLFWwindow* window, double xoffset, double yoffset); ///< @brief handle mouse scroll input
 
 	bool _keys[GLFW_KEY_LAST]; ///< @brief internal array of pressed keys
 	bool _keysUp[GLFW_KEY_LAST]; ///< @brief internal array of released keys
