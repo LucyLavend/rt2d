@@ -5,14 +5,17 @@
  *     - Initial commit
  */
 
+#include "basicentity.h"
 #include "character.h"
 
-Character::Character(int posX, int posY)
+Character::Character(int posX, int posY) : BasicEntity()
 {
 	initPosition.x = posX;
 	initPosition.y = posY;
 
 	home = false;
+	is_controlled = false;
+	jumping = false;
 
 	spriteW = 3;
 	spriteH = 5;
@@ -30,20 +33,46 @@ void Character::init() {
 }
 
 void Character::walk() {
-	position.x += 1 * direction;
+	if (is_controlled) {
+		if (input()->getJoyButton(1)) {
+			direction = 1;
+			position.x++;
+		}
+		else if (input()->getJoyButton(2)) {
+			direction = -1;
+			position.x--;
+		}
+		if (input()->getJoyButtonDown(3)) {
+			jumping = true;
+			position.y++;
+		}
+		if (input()->getJoyButtonUp(3)) {
+			jumping = false;
+		}
+	}
+	else {
+		position.x += 1 * direction;
+	}
 }
 
 void Character::applyGravity() {
-	position.y--;
-	airTime++;
+	if (!jumping) {
+		position.y--;
+		airTime++;
+	}
 }
 
 void Character::switchDirection() {
-	if (direction == 1) {
-		direction = -1;
+	if (is_controlled) {
+		return;
 	}
 	else {
-		direction = 1;
+		if (direction == 1) {
+			direction = -1;
+		}
+		else {
+			direction = 1;
+		}
 	}
 }
 

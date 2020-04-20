@@ -11,7 +11,7 @@
 #include <vector>
 #include <vectorx.h>
 
-class Character
+class Character: public BasicEntity
 {
 public:
 	Character(int posX, int posY);
@@ -21,6 +21,8 @@ public:
 	Pointi initPosition;
 	bool awake;
 	bool home;
+	bool jumping;
+	bool is_controlled;
 	int direction;
 	int spriteW;
 	int spriteH;

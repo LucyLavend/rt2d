@@ -417,6 +417,14 @@ std::vector<int> Game::createMapFromImage() {
 					c.spriteH = b;
 					characters.push_back(c);
 				}
+				//spawn a special player controlled character
+				if (r == 2) {
+					Character c(x, y);
+					c.spriteW = g;
+					c.spriteH = b;
+					c.is_controlled = true;
+					characters.push_back(c);
+				}
 				//check if there a home via the red channel, then use green and blue to change the size of the home
 				else if (r == 222) {
 					Home h(x, y);
