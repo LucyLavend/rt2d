@@ -109,12 +109,6 @@ void Input::updateInput(GLFWwindow* w)
 		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
 		//std::cout << "Number of axes: " << axesCount << std::endl;
 
-		int buttonCount;
-		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
-		if (GLFW_PRESS == buttons[1]) {
-			std::cout << "X button pressed" << std::endl;
-		}
-
 		const char *name = glfwGetJoystickName(GLFW_JOYSTICK_1);
 		//std::cout << name << std::endl;
 	}
