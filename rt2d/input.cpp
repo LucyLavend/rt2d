@@ -41,15 +41,15 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	Singleton<Input>::instance()->mouseScrollY = yoffset;
 }
 
-void joystickCallback(int jid, int event)
+void joystickCallback(int joyID, int event)
 {
 	if (event == GLFW_CONNECTED)
 	{
-		std::cout << "Joystick " << glfwGetJoystickName(jid) << " (" << jid << ") " << " has been connected." << std::endl;
+		std::cout << "Joystick " << glfwGetJoystickName(joyID) << " (" << joyID << ") " << " has been connected." << std::endl;
 	}
 	else if (event == GLFW_DISCONNECTED)
 	{
-		std::cout << "Joystick " << jid << " has been disconnected." << std::endl;
+		std::cout << "Joystick " << joyID << " has been disconnected." << std::endl;
 	}
 }
 
